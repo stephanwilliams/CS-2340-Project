@@ -16,12 +16,12 @@ public class WelcomeScreen extends Activity {
         setContentView(R.layout.activity_welcome_screen);
         
         Button login = (Button)findViewById(R.id.login);
-        login.setOnTouchListener(new View.OnTouchListener() {
+        login.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public void onClick(View v) {
 				Intent intent = new Intent(WelcomeScreen.this, LogInActivity.class);
 				startActivity(intent);
-				return true;
+				//return true;
 			}
         });
     }
