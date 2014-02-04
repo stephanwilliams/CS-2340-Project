@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.team19.cs2340.LogInActivity"
+            android:label="@string/title_activity_log_in"
+            android:parentActivityName="com.team19.cs2340.WelcomeScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.team19.cs2340.WelcomeScreen" />
+        </activity>
     </application>
 
 </manifest>
