@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.support.v4.app.NavUtils;
 
 public class LogInActivity extends Activity {
-
+	private User admin = new User();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,5 +50,26 @@ public class LogInActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	public void onLogin() {
+		EditText editText = (EditText) findViewById(R.string.username);
+    	String username = editText.getText().toString();
+		EditText editText2 = (EditText) findViewById(R.string.password);
+    	String pass = editText2.getText().toString();
+    	
+    	User newUser = new User(username, pass);
+    	if (isAdmin(newUser)) {
+    		editText.setText("Correct!");
+    		editText2.setText("Correct!");
+    	}
+    	else {
+    		editText.setText("Incorrect!");
+    		editText2.setText("Incorrect!");    		
+    	}
+	}
 
+	private boolean isAdmin(User user) {
+		return (user.getPass() == admin.getPass() && user.getName() == admin.getName());
+	}
 }
