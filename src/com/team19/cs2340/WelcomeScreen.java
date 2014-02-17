@@ -27,8 +27,9 @@ public class WelcomeScreen extends Activity {
 		startActivity(intent);
     }
     
-    public void gotoRegistration(View v) {
-    	
+    public void gotoRegister(View v) {
+		Intent intent = new Intent(WelcomeScreen.this, RegistrationActivity.class);
+		startActivity(intent);
     }
     
 }

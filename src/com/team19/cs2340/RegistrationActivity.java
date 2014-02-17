@@ -1,7 +1,9 @@
 package com.team19.cs2340;
 
+import com.team19.cs2340.user.UserAccountService;
+
 import android.app.Activity;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -10,20 +12,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.team19.cs2340.user.IUser;
-import com.team19.cs2340.user.UserAccountService;
-
-public class LogInActivity extends Activity {
+public class RegistrationActivity extends Activity {
 	private UserAccountService uas;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_log_in);
+		setContentView(R.layout.activity_registration);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		uas = new UserAccountService(this);
-		
 	}
 
 	/**
@@ -38,8 +36,41 @@ public class LogInActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.log_in, menu);
+		getMenuInflater().inflate(R.menu.registration, menu);
 		return true;
+	}
+	
+	public void registerUser(View v) {
+		TextView textView1 = (TextView) findViewById(R.id.textView1);
+		textView1.setText("");
+		
+		EditText usernameInput = (EditText)findViewById(R.id.usernameInput);
+		EditText passwordInput = (EditText)findViewById(R.id.passwordInput);
+		EditText confirmPasswordInput = (EditText)findViewById(R.id.confirmPassword);
+		
+		String username = usernameInput.getText().toString();
+		String passwordIn = passwordInput.getText().toString();
+		String passwordConfirm = confirmPasswordInput.getText().toString();
+		
+		if(uas.userExists(username)){
+			textView1.setText("Username already exists!");
+		}
+		else{
+			if(passwordIn.equals(passwordConfirm)){
+				uas.userCreate(username, passwordIn);
+				//Test Statement
+				if(uas.authenticateUser(username, passwordIn) != null){
+					textView1.setText("Account created!");	
+				}
+				else{
+					textView1.setText("Account failed to be created!");
+				}
+			}
+			else{
+				passwordInput.setText("");				
+	    		textView1.setText("Passwords do not match!");
+			}
+		}
 	}
 
 	@Override
@@ -57,37 +88,6 @@ public class LogInActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	
-	public void onLogin(View v) {
-		TextView textView1 = (TextView) findViewById(R.id.textView1);
-		textView1.setText("");
-		
-		EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
-    	String username = usernameInput.getText().toString();
-		EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
-    	String password = passwordInput.getText().toString();
-    	
-    	IUser user = uas.authenticateUser(username, password);
-    	if (user == null) {
-    		passwordInput.setText("");    
-    		
-    		textView1.setText("GET\nIT\nTOGETHER");
-    	}
-    	else {
-    		passwordInput.setText("");
-	    	if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
-	    		
-	    	} else {
-	    		// ...
-	    	}
-	    	
-	    	//When admin implemented, put this in else!
-	    	Intent intent = new Intent(this, HomeScreenActivity.class);
-    		intent.putExtra("user", user);
-        	startActivity(intent);
-    	}
 	}
 
 }

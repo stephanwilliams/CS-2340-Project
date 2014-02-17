@@ -29,6 +29,21 @@ public class UserAccountService {
 		}
 		return null;
 	}
+	public boolean userExists(String username){
+		Cursor cursor = db.rawQuery("SELECT username" +
+									" FROM users" +
+									" WHERE username = ?",
+									new String [] { username });
+		return cursor.moveToFirst();
+	}
+	
+	public boolean userCreate(String username, String password){
+		db.execSQL("INSERT INTO users "
+				+ "(username, password, accountType)"
+				+ " VALUES "
+				+ "('"+ username +"', '" + password +"','0');");
+		return true;
+	}
 	
 	private IUser getUser(String username) {
 		Cursor cursor = db.query("users",

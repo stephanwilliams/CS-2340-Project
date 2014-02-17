@@ -6,6 +6,7 @@
     <string name="title_activity_log_in">Log In</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
-    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="title_activity_home_screen">Home Screen</string>
+    <string name="title_activity_registration">Register</string>
 
 </resources>
