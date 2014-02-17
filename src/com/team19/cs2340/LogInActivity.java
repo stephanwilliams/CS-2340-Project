@@ -1,14 +1,18 @@
 package com.team19.cs2340;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.support.v4.app.NavUtils;
+
+import com.team19.cs2340.user.IUser;
+import com.team19.cs2340.user.UserAccountService;
 
 public class LogInActivity extends Activity {
-	private User admin = new User();
+	private UserAccountService uas;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +20,7 @@ public class LogInActivity extends Activity {
 		setContentView(R.layout.activity_log_in);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		uas = new UserAccountService(this);
 	}
 
 	/**
@@ -52,24 +57,26 @@ public class LogInActivity extends Activity {
 	}
 	
 	
-	public void onLogin() {
-		EditText editText = (EditText) findViewById(R.string.username);
+	public void onLogin(View v) {
+		EditText editText = (EditText) findViewById(R.id.editText1);
     	String username = editText.getText().toString();
-		EditText editText2 = (EditText) findViewById(R.string.password);
-    	String pass = editText2.getText().toString();
+		EditText editText2 = (EditText) findViewById(R.id.editText2);
+    	String password = editText2.getText().toString();
     	
-    	User newUser = new User(username, pass);
-    	if (isAdmin(newUser)) {
-    		editText.setText("Correct!");
-    		editText2.setText("Correct!");
-    	}
-    	else {
+    	IUser user = uas.authenticateUser(username, password);
+    	if (user == null) {
     		editText.setText("Incorrect!");
     		editText2.setText("Incorrect!");    		
     	}
+    	else {
+    		editText.setText("Correct!");
+    		editText2.setText("Correct!");
+	    	if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
+	    		// ...
+	    	} else {
+	    		// ...
+	    	}
+    	}
 	}
 
-	private boolean isAdmin(User user) {
-		return (user.getPass() == admin.getPass() && user.getName() == admin.getName());
-	}
 }
