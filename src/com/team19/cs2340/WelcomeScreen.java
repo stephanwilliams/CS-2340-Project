@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 
 public class WelcomeScreen extends Activity {
 
@@ -14,16 +12,6 @@ public class WelcomeScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
-        
-        Button login = (Button)findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(WelcomeScreen.this, LogInActivity.class);
-				startActivity(intent);
-				//return true;
-			}
-        });
     }
 
 
@@ -32,6 +20,15 @@ public class WelcomeScreen extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.welcome_screen, menu);
         return true;
+    }
+    
+    public void gotoLogin(View v) {
+		Intent intent = new Intent(WelcomeScreen.this, LogInActivity.class);
+		startActivity(intent);
+    }
+    
+    public void gotoRegistration(View v) {
+    	
     }
     
 }
