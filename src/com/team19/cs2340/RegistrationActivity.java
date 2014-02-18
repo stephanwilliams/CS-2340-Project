@@ -1,9 +1,6 @@
 package com.team19.cs2340;
 
-import com.team19.cs2340.user.UserAccountService;
-
 import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -11,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.team19.cs2340.user.UserAccountService;
 
 public class RegistrationActivity extends Activity {
 	private UserAccountService uas;
@@ -57,7 +56,7 @@ public class RegistrationActivity extends Activity {
 		}
 		else{
 			if(passwordIn.equals(passwordConfirm)){
-				uas.userCreate(username, passwordIn);
+				uas.createUser(username, passwordIn);
 				//Test Statement
 				if(uas.authenticateUser(username, passwordIn) != null){
 					textView1.setText("Account created!");	

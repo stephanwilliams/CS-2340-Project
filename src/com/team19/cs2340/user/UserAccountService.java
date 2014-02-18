@@ -37,11 +37,12 @@ public class UserAccountService {
 		return cursor.moveToFirst();
 	}
 	
-	public boolean userCreate(String username, String password){
+	public boolean createUser(String username, String password){
 		db.execSQL("INSERT INTO users "
-				+ "(username, password, accountType)"
+				+ "(username, password)"
 				+ " VALUES "
-				+ "('"+ username +"', '" + password +"','0');");
+				+ "(?, ?);",
+				new String[] { username, hashPassword(password) });
 		return true;
 	}
 	

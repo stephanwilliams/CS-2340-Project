@@ -9,25 +9,25 @@
     tools:context=".WelcomeScreen" >
 
     <Button
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="125dp"
-        android:onClick="gotoRegister"
-        android:text="Register" />
-
-    <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/register"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="30dp"
         android:onClick="gotoLogin"
         android:text="Log In" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:onClick="gotoRegister"
+        android:text="Register" />
 
 </RelativeLayout>
