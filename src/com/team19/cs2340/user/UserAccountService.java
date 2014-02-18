@@ -24,8 +24,6 @@ public class UserAccountService {
 		IUser user = getUser(username);
 		if (user == null) return null;
 		String passwordHash = hashPassword(password);
-		System.out.println("DB HASH: " + user.getPasswordHash());
-		System.out.println("INPUT HASH: " + passwordHash);
 		if (user.getPasswordHash().equals(passwordHash)) {
 			return user;
 		}
