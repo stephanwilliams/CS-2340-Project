@@ -58,19 +58,19 @@ public class LogInActivity extends Activity {
 	
 	
 	public void onLogin(View v) {
-		EditText editText = (EditText) findViewById(R.id.editText1);
-    	String username = editText.getText().toString();
-		EditText editText2 = (EditText) findViewById(R.id.editText2);
-    	String password = editText2.getText().toString();
+		EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
+    	String username = usernameInput.getText().toString();
+		EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
+    	String password = passwordInput.getText().toString();
     	
     	IUser user = uas.authenticateUser(username, password);
     	if (user == null) {
-    		editText.setText("Incorrect!");
-    		editText2.setText("Incorrect!");    		
+    		usernameInput.setText("Incorrect!");
+    		passwordInput.setText("Incorrect!");    		
     	}
     	else {
-    		editText.setText("Correct!");
-    		editText2.setText("Correct!");
+    		usernameInput.setText("Correct!");
+    		passwordInput.setText("Correct!");
 	    	if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
 	    		// ...
 	    	} else {
