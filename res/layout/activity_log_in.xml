@@ -42,4 +42,14 @@
         android:onClick="onLogin"
         android:text="Log In" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:textSize="10pt"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
 </RelativeLayout>

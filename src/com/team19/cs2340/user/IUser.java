@@ -1,6 +1,8 @@
 package com.team19.cs2340.user;
 
-public interface IUser {
+import java.io.Serializable;
+
+public interface IUser extends Serializable {
 	
 	public static enum AccountType {
 		ACCOUNT_HOLDER,

@@ -1,6 +1,7 @@
 package com.team19.cs2340.user;
 
 class User implements IUser {
+	private static final long serialVersionUID = -4509252018208709296L;
 	private String username;
 	private String passwordHash;
 	private AccountType accountType;

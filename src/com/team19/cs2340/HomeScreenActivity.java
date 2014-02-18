@@ -6,23 +6,27 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
-import com.team19.cs2340.user.UserAccountService;
 
-public class LogInActivity extends Activity {
-	private UserAccountService uas;
+public class HomeScreenActivity extends Activity {
+	IUser user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_log_in);
+		setContentView(R.layout.activity_home_screen);
 		// Show the Up button in the action bar.
+		
+		Intent intent = getIntent();
+		user = (IUser) intent.getSerializableExtra("user");
+		
+		TextView textUsername = (TextView) findViewById(R.id.textView1);
+		textUsername.setText(user.getUsername());
+    	
 		setupActionBar();
-		uas = new UserAccountService(this);
 	}
 
 	/**
@@ -37,7 +41,7 @@ public class LogInActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.log_in, menu);
+		getMenuInflater().inflate(R.menu.home_screen, menu);
 		return true;
 	}
 
@@ -56,37 +60,6 @@ public class LogInActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	
-	public void onLogin(View v) {
-		TextView textView1 = (TextView) findViewById(R.id.textView1);
-		textView1.setText("");
-		
-		EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
-    	String username = usernameInput.getText().toString();
-		EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
-    	String password = passwordInput.getText().toString();
-    	
-    	IUser user = uas.authenticateUser(username, password);
-    	if (user == null) {
-    		passwordInput.setText("");    
-    		
-    		textView1.setText("GET\nIT\nTOGETHER");
-    	}
-    	else {
-    		passwordInput.setText("");
-	    	if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
-	    		
-	    	} else {
-	    		// ...
-	    	}
-	    	
-	    	//When admin implemented, put this in else!
-	    	Intent intent = new Intent(this, HomeScreenActivity.class);
-    		intent.putExtra("user", user);
-        	startActivity(intent);
-    	}
 	}
 
 }
