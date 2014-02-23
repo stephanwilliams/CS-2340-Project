@@ -48,6 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.team19.cs2340.WelcomeScreen" />
         </activity>
+        <activity
+            android:name="com.team19.cs2340.AccountCreationActivity"
+            android:label="@string/title_activity_account_creation" >
+        </activity>
     </application>
 
 </manifest>
