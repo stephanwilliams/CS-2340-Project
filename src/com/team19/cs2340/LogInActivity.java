@@ -73,7 +73,7 @@ public class LogInActivity extends Activity {
     	if (user == null) {
     		passwordInput.setText("");    
     		
-    		textView1.setText("GET\nIT\nTOGETHER");
+    		textView1.setText("Invalid login");
     	}
     	else {
     		passwordInput.setText("");

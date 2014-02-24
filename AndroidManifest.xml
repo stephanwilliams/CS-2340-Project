@@ -35,10 +35,10 @@
         <activity
             android:name="com.team19.cs2340.HomeScreenActivity"
             android:label="@string/title_activity_home_screen"
-            android:parentActivityName="com.team19.cs2340.LogInActivity" >
+            android:parentActivityName="com.team19.cs2340.WelcomeScreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.team19.cs2340.LogInActivity" />
+                android:value="com.team19.cs2340.WelcomeScreen" />
         </activity>
         <activity
             android:name="com.team19.cs2340.RegistrationActivity"
