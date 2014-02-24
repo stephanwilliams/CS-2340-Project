@@ -8,5 +8,8 @@
     <string name="username">Username</string>
     <string name="title_activity_home_screen">Home Screen</string>
     <string name="title_activity_registration">Register</string>
+    <string name="title_activity_account_creation">AccountCreationActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_add_account">Add Account</string>
 
 </resources>
