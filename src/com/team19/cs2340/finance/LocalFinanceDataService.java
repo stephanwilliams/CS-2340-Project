@@ -1,6 +1,8 @@
 package com.team19.cs2340.finance;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -70,6 +72,23 @@ class LocalFinanceDataService implements IFinanceDataService{
 			}
 		}
 		
+	}
+
+	@Override
+	public List<IAccount> getAccounts(IUser user) {
+		Cursor cursor =
+				db.query("accounts",
+						 new String[] { "_id" },
+						 "username = ?",
+						 new String[] { user.getUsername() },
+						 null,
+						 null,
+						 null);
+		List<IAccount> accounts = new ArrayList<IAccount>();
+		while (cursor.moveToNext()) {
+			accounts.add(getAccount(user, cursor.getLong(0)));
+		}
+		return accounts;
 	}
 	
 }
