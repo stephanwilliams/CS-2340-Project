@@ -23,7 +23,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 	
 	@Override
 	public IAccount createAccount(IUser user, String fullName, String displayName,
-			BigDecimal balance, BigDecimal monthlyInterest) {
+			BigDecimal balance, BigDecimal monthlyInterest) throws FinanceDataException {
 		ContentValues cv = new ContentValues();
 		cv.put("username", user.getUsername());
 		cv.put("fullName", fullName);
@@ -34,15 +34,14 @@ class LocalFinanceDataService implements IFinanceDataService{
 		long id = db.insert("accounts", null, cv);
 
 		if (id == -1) {
-			// failed to create account
-			return null;
+			throw new FinanceDataException("Account creation failed");
 		} else {
 			return getAccount(user, id);
 		}
 	}
 	
 	@Override
-	public IAccount getAccount(IUser user, long accountId) {
+	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
 		Cursor cursor =
 			db.query("accounts",
 					 new String[] {
@@ -55,12 +54,10 @@ class LocalFinanceDataService implements IFinanceDataService{
 					 null,
 					 null);
 		if (!cursor.moveToFirst()) {
-			// invalid account ID
-			return null;
+			throw new FinanceDataException("Account does not exist");
 		} else {
 			if (!cursor.getString(1).equals(user.getUsername())) {
-				// account does not belong to given user
-				return null;
+				throw new FinanceDataException("Account belongs to different user");
 			} else {
 				IAccount account = new Account(
 						cursor.getLong(0),
@@ -75,7 +72,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 	}
 
 	@Override
-	public List<IAccount> getAccounts(IUser user) {
+	public List<IAccount> getAccounts(IUser user) throws FinanceDataException {
 		Cursor cursor =
 				db.query("accounts",
 						 new String[] { "_id" },
