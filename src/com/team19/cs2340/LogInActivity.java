@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
 import com.team19.cs2340.user.IUserAccountService;
+import com.team19.cs2340.user.UserAccountException;
 import com.team19.cs2340.user.UserAccountServiceFactory;
 
 public class LogInActivity extends Activity {
@@ -70,13 +71,9 @@ public class LogInActivity extends Activity {
 		EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
     	String password = passwordInput.getText().toString();
     	
-    	IUser user = uas.authenticateUser(username, password);
-    	if (user == null) {
-    		passwordInput.setText("");    
-    		
-    		textView1.setText("Invalid login");
-    	}
-    	else {
+    	try {
+	    	IUser user = uas.authenticateUser(username, password);
+
     		passwordInput.setText("");
 	    	if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
 	    		
@@ -88,6 +85,9 @@ public class LogInActivity extends Activity {
 	    	Intent intent = new Intent(this, HomeScreenActivity.class);
     		intent.putExtra("user", user);
         	startActivity(intent);
+    	} catch (UserAccountException uae) {
+    		passwordInput.setText("");    
+    		textView1.setText(uae.getMessage());
     	}
 	}
 
