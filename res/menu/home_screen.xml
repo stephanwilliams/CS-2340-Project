@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_addAccount"
+        android:id="@+id/action_add_account"
         android:icon="@drawable/ic_action_new"
         android:title="@string/action_add_account" android:showAsAction="always|withText"/>
 

@@ -37,6 +37,12 @@ public class HomeScreenActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
+	
+	@Override
+	protected void onResume() {
+		//do update stuff here
+		super.onResume();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,8 +64,11 @@ public class HomeScreenActivity extends Activity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_add_account:
+			Intent intent = new Intent(this, AccountCreationActivity.class);
+    		intent.putExtra("user", user);
+        	startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }
