@@ -63,4 +63,9 @@ public class Account implements IAccount {
 	public void setMonthlyInterest(BigDecimal monthlyInterest) {
 		this.monthlyInterest = monthlyInterest;
 	}
+	
+	@Override
+	public String toString() {
+		return displayName;
+	}
 }

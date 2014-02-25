@@ -1,16 +1,23 @@
 package com.team19.cs2340;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.team19.cs2340.finance.FinanceDataServiceFactory;
+import com.team19.cs2340.finance.IAccount;
+import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.user.IUser;
 
 public class HomeScreenActivity extends Activity {
+	IFinanceDataService fds = null;
 	IUser user;
 	
 	@Override
@@ -21,6 +28,22 @@ public class HomeScreenActivity extends Activity {
 		
 		Intent intent = getIntent();
 		user = (IUser) intent.getSerializableExtra("user");
+		System.out.println("USER NAME IS " + user.getUsername());
+		
+		fds = FinanceDataServiceFactory.createFinanceDataService(this);
+		
+		ArrayAdapter<IAccount> adapter = new ArrayAdapter<IAccount>(this, R.layout.account_list_item);
+		try {
+			List<IAccount> accounts = fds.getAccounts(user);
+			
+			ListView listView = (ListView)findViewById(R.id.account_list);
+			listView.setAdapter(adapter);
+
+			adapter.addAll(accounts);
+			adapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		setupActionBar();
 	}
