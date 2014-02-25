@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.team19.cs2340.DatabaseHelper;
 
-public class LocalUserAccountService implements IUserAccountService {
+class LocalUserAccountService implements IUserAccountService {
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase db;
 	
