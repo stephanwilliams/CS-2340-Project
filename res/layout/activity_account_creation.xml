@@ -17,7 +17,9 @@
         android:layout_marginTop="58dp"
         android:ems="10"
         android:hint="Full Name"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName">
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/editText2"
