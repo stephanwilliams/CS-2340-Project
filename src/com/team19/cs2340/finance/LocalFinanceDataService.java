@@ -10,15 +10,16 @@ import android.database.sqlite.SQLiteDatabase;
 import com.team19.cs2340.DatabaseHelper;
 import com.team19.cs2340.user.IUser;
 
-public class FinanceDataService {
+public class LocalFinanceDataService implements IFinanceDataService{
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase db;
 	
-	public FinanceDataService(Context context) {
+	public LocalFinanceDataService(Context context) {
 		this.dbHelper = new DatabaseHelper(context);
 		this.db = dbHelper.getWritableDatabase();
 	}
 	
+	@Override
 	public IAccount createAccount(IUser user, String fullName, String displayName,
 			BigDecimal balance, BigDecimal monthlyInterest) {
 		ContentValues cv = new ContentValues();
@@ -38,6 +39,7 @@ public class FinanceDataService {
 		}
 	}
 	
+	@Override
 	public IAccount getAccount(IUser user, long accountId) {
 		Cursor cursor =
 			db.query("accounts",

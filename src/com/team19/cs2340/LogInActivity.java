@@ -11,10 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
-import com.team19.cs2340.user.UserAccountService;
+import com.team19.cs2340.user.LocalUserAccountService;
 
 public class LogInActivity extends Activity {
-	private UserAccountService uas;
+	private LocalUserAccountService uas;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class LogInActivity extends Activity {
 		setContentView(R.layout.activity_log_in);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		uas = new UserAccountService(this);
+		uas = new LocalUserAccountService(this);
 		
 	}
 

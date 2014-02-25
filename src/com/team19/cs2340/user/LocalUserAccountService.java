@@ -10,15 +10,16 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.team19.cs2340.DatabaseHelper;
 
-public class UserAccountService {
+public class LocalUserAccountService implements IUserAccountService {
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase db;
 	
-	public UserAccountService(Context context) {
+	public LocalUserAccountService(Context context) {
 		this.dbHelper = new DatabaseHelper(context);
 		this.db = dbHelper.getWritableDatabase();
 	}
 	
+	@Override
 	public IUser authenticateUser(String username, String password) {
 		IUser user = getUser(username);
 		if (user == null) return null;
@@ -28,6 +29,8 @@ public class UserAccountService {
 		}
 		return null;
 	}
+	
+	@Override
 	public boolean userExists(String username){
 		Cursor cursor = db.rawQuery("SELECT username" +
 									" FROM users" +
@@ -36,6 +39,7 @@ public class UserAccountService {
 		return cursor.moveToFirst();
 	}
 	
+	@Override
 	public boolean createUser(String username, String password){
 		db.execSQL("INSERT INTO users "
 				+ "(username, password)"

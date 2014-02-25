@@ -9,10 +9,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.team19.cs2340.user.UserAccountService;
+import com.team19.cs2340.user.LocalUserAccountService;
 
 public class RegistrationActivity extends Activity {
-	private UserAccountService uas;
+	private LocalUserAccountService uas;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class RegistrationActivity extends Activity {
 		setContentView(R.layout.activity_registration);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		uas = new UserAccountService(this);
+		uas = new LocalUserAccountService(this);
 	}
 
 	/**
