@@ -1,15 +1,21 @@
 package com.team19.cs2340;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
@@ -28,19 +34,15 @@ public class HomeScreenActivity extends Activity {
 		
 		Intent intent = getIntent();
 		user = (IUser) intent.getSerializableExtra("user");
-		System.out.println("USER NAME IS " + user.getUsername());
 		
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
-		ArrayAdapter<IAccount> adapter = new ArrayAdapter<IAccount>(this, R.layout.account_list_item);
 		try {
 			List<IAccount> accounts = fds.getAccounts(user);
+			ArrayAdapter<IAccount> adapter = new AccountListAdapter(this, R.layout.account_list_item, accounts);
 			
 			ListView listView = (ListView)findViewById(R.id.account_list);
 			listView.setAdapter(adapter);
-
-			adapter.addAll(accounts);
-			adapter.notifyDataSetChanged();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,5 +91,31 @@ public class HomeScreenActivity extends Activity {
         	startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private class AccountListAdapter extends ArrayAdapter<IAccount> {
+
+		public AccountListAdapter(Context context, int resource,
+				List<IAccount> objects) {
+			super(context, resource, objects);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			IAccount account = getItem(position);
+
+			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.account_list_item, parent, false);
+
+			TextView accountDisplayName = (TextView)rowView.findViewById(R.id.account_display_name);
+			accountDisplayName.setText(account.getDisplayName());
+			
+			TextView accountBalance = (TextView)rowView.findViewById(R.id.account_balance);
+			NumberFormat format = NumberFormat.getCurrencyInstance();
+			accountBalance.setText(format.format(account.getBalance().doubleValue()));
+
+			return rowView;
+		}
+		
 	}
 }
