@@ -48,7 +48,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 					 new String[] {
 						"_id", "username", "fullName", "displayName",
 						"balance", "monthlyInterest" },
-					 "_id = ?",
+					 "_id = ? AND username = ?",
 					 new String[] { Long.toString(accountId),
 									user.getUsername() },
 					 null,
