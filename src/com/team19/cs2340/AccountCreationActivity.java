@@ -32,6 +32,8 @@ public class AccountCreationActivity extends Activity {
 		return true;
 	}
 	
+	
+	
 	public void onSubmit(View view) {
 		EditText fullName = (EditText)findViewById(R.id.editText1);
 		EditText displayName = (EditText)findViewById(R.id.editText2);
@@ -52,12 +54,13 @@ public class AccountCreationActivity extends Activity {
 			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
 
-		}	
-		
-		
+		}		
 	}
 	
 	public void onCancel(View view) {
-		NavUtils.navigateUpFromSameTask(this);
+		Intent intent = getIntent();
+		Intent goUp = new Intent(this, HomeScreenActivity.class);
+		intent.putExtra("user", (IUser) intent.getSerializableExtra("user"));
+		NavUtils.navigateUpTo(this, goUp);
 	}
 }
