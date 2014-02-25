@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
@@ -23,9 +22,6 @@ public class HomeScreenActivity extends Activity {
 		Intent intent = getIntent();
 		user = (IUser) intent.getSerializableExtra("user");
 		
-		TextView textUsername = (TextView) findViewById(R.id.textView1);
-		textUsername.setText(user.getUsername());
-    	
 		setupActionBar();
 	}
 
