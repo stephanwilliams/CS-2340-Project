@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,36 +21,45 @@ class LocalUserAccountService implements IUserAccountService {
 	}
 	
 	@Override
-	public IUser authenticateUser(String username, String password) {
+	public IUser authenticateUser(String username, String password) throws UserAccountException {
 		IUser user = getUser(username);
 		if (user == null) return null;
 		String passwordHash = hashPassword(password);
 		if (user.getPasswordHash().equals(passwordHash)) {
 			return user;
+		} else {
+			throw new UserAccountException("Invalid password");
 		}
-		return null;
 	}
 	
 	@Override
 	public boolean userExists(String username){
-		Cursor cursor = db.rawQuery("SELECT username" +
-									" FROM users" +
-									" WHERE username = ?",
-									new String [] { username });
+		Cursor cursor = db.query("users",
+								 new String[] { "username" },
+								 "username = ?",
+								 new String[] { username },
+								 null,
+								 null,
+								 null);
 		return cursor.moveToFirst();
 	}
 	
 	@Override
-	public boolean createUser(String username, String password){
-		db.execSQL("INSERT INTO users "
-				+ "(username, password)"
-				+ " VALUES "
-				+ "(?, ?);",
-				new String[] { username, hashPassword(password) });
-		return true;
+	public IUser createUser(String username, String password) throws UserAccountException {
+		if (userExists(username)) throw new UserAccountException("Username already exists");
+
+		ContentValues cv = new ContentValues();
+		cv.put("username", username);
+		cv.put("password", hashPassword(password));
+		long id = db.insert("users", null, cv);
+		if (id == -1) {
+			throw new UserAccountException("Account creation failed");
+		} else {
+			return authenticateUser(username, password);
+		}
 	}
 	
-	private IUser getUser(String username) {
+	private IUser getUser(String username) throws UserAccountException {
 		Cursor cursor = db.query("users",
 								 new String[] { "username", "password", "accountType" },
 								 "username = ?",
@@ -63,7 +73,7 @@ class LocalUserAccountService implements IUserAccountService {
 								   IUser.AccountType.values()[cursor.getInt(2)]);
 			return user;
 		} else {
-			return null;
+			throw new UserAccountException("User does not exist");
 		}
 	}
 	

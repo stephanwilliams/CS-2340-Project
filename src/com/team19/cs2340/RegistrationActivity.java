@@ -1,6 +1,7 @@
 package com.team19.cs2340;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.team19.cs2340.user.IUser;
 import com.team19.cs2340.user.IUserAccountService;
+import com.team19.cs2340.user.UserAccountException;
 import com.team19.cs2340.user.UserAccountServiceFactory;
 
 public class RegistrationActivity extends Activity {
@@ -41,8 +44,8 @@ public class RegistrationActivity extends Activity {
 	}
 	
 	public void registerUser(View v) {
-		TextView textView1 = (TextView) findViewById(R.id.textView1);
-		textView1.setText("");
+		TextView errorMessage = (TextView) findViewById(R.id.textView1);
+		errorMessage.setText("");
 		
 		EditText usernameInput = (EditText)findViewById(R.id.usernameInput);
 		EditText passwordInput = (EditText)findViewById(R.id.passwordInput);
@@ -52,24 +55,19 @@ public class RegistrationActivity extends Activity {
 		String passwordIn = passwordInput.getText().toString();
 		String passwordConfirm = confirmPasswordInput.getText().toString();
 		
-		if(uas.userExists(username)){
-			textView1.setText("Username already exists!");
-		}
-		else{
-			if(passwordIn.equals(passwordConfirm)){
-				uas.createUser(username, passwordIn);
-				//Test Statement
-				if(uas.authenticateUser(username, passwordIn) != null){
-					textView1.setText("Account created!");	
-				}
-				else{
-					textView1.setText("Account failed to be created!");
-				}
+		if (passwordIn.equals(passwordConfirm)) {
+			try {
+				IUser user = uas.createUser(username, passwordIn);
+		    	Intent intent = new Intent(this, HomeScreenActivity.class);
+	    		intent.putExtra("user", user);
+	    		startActivity(intent);
+			} catch (UserAccountException uae) {
+				errorMessage.setText(uae.getMessage());
 			}
-			else{
-				passwordInput.setText("");				
-	    		textView1.setText("Passwords do not match!");
-			}
+		} else {
+			passwordInput.setText("");				
+			confirmPasswordInput.setText("");
+    		errorMessage.setText("Passwords do not match!");
 		}
 	}
 
