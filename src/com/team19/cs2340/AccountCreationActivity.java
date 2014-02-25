@@ -46,8 +46,10 @@ public class AccountCreationActivity extends Activity {
 					displayName.getText().toString(),
 					new BigDecimal(balance.getText().toString()),
 					new BigDecimal(monthlyInterest.getText().toString()));
-
-			NavUtils.navigateUpFromSameTask(this);
+			
+			Intent goUp = new Intent(this, HomeScreenActivity.class);
+    		intent.putExtra("user", (IUser) intent.getSerializableExtra("user"));
+			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
 
 		}	
