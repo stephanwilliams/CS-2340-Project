@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.team19.cs2340.DatabaseHelper;
 import com.team19.cs2340.user.IUser;
 
-public class LocalFinanceDataService implements IFinanceDataService{
+class LocalFinanceDataService implements IFinanceDataService{
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase db;
 	
