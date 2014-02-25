@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	
-	public static final int VERSION = 1;
+	public static final int VERSION = 2;
 	public static final String DATABASE_NAME = "finance.db";
 	
 	public DatabaseHelper(Context context) {
@@ -29,8 +29,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "username TEXT NOT NULL,"
 				+ "fullName TEXT NOT NULL,"
 				+ "displayName TEXT NOT NULL,"
-				+ "balance INTEGER NOT NULL DEFAULT 0,"
-				+ "monthlyInterest INTEGER NOT NULL DEFAULT 0"
+				+ "balance TEXT NOT NULL DEFAULT 0,"
+				+ "monthlyInterest TEXT NOT NULL DEFAULT 0"
 				+ ");");
 		db.execSQL("CREATE TABLE transactions ("
 				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -38,15 +38,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "addedTimestamp INTEGER NOT NULL,"
 				+ "effectiveTimestamp INTEGER NOT NULL,"
 				+ "type INTEGER NOT NULL,"
-				+ "amount INTEGER NOT NULL,"
+				+ "amount TEXT NOT NULL,"
 				+ "category TEXT NOT NULL"
 				+ ");");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
+		System.out.println("UPGRADING THE DATABASE");
+		db.execSQL("DROP TABLE IF EXISTS users");
+		db.execSQL("DROP TABLE IF EXISTS accounts");
+		db.execSQL("DROP TABLE IF EXISTS transactions");
+		onCreate(db);
 	}
 
 }
