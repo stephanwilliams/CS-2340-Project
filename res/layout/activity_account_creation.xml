@@ -54,7 +54,6 @@
         android:hint="Balance"
         android:inputType="numberDecimal" >
 
-        <requestFocus />
     </EditText>
 
     <Button
