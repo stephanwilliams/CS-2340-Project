@@ -12,8 +12,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:padding="10dp"
-        android:textSize="15sp" 
-        android:text=""/>
+        android:textSize="15sp" />
 	
     <TextView
         android:id="@+id/transaction_date"
@@ -25,7 +24,6 @@
         android:layout_alignParentTop="true"
         android:gravity="right"
         android:padding="10dp"
-        android:text=""
         android:textSize="15sp" />
 
     <TextView
@@ -36,7 +34,6 @@
         android:layout_alignBottom="@+id/transaction_category"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="94dp"
-        android:text=""
         android:textSize="15sp" />
 
     <TextView
@@ -47,7 +44,6 @@
         android:layout_alignBottom="@+id/transaction_category"
         android:layout_marginLeft="26dp"
         android:layout_toRightOf="@+id/transaction_reason"
-        android:text=""
         android:textSize="15sp" />
 
 </RelativeLayout>

@@ -21,26 +21,6 @@
         <requestFocus />
     </EditText>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:onClick="onCancel"
-        android:text="@string/cancel" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_toRightOf="@+id/datePicker1"
-        android:onClick="onSubmit"
-        android:text="@string/submit" />
-
     <EditText
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
@@ -61,14 +41,6 @@
         android:hint="Category"
         android:inputType="text" />
 
-    <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="72dp" />
-
     <EditText
         android:id="@+id/editText4"
         android:layout_width="wrap_content"
@@ -78,5 +50,35 @@
         android:ems="10"
         android:hint="Transaction Amount"
         android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignRight="@+id/editText4"
+        android:onClick="onSubmit"
+        android:text="@string/submit" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText4"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="54dp"
+        android:onClick="onCancel"
+        android:text="@string/cancel" />
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText4"
+        android:layout_below="@+id/editText4"
+        android:ems="10"
+         android:hint="Date"
+        android:inputType="date" />
     
 </RelativeLayout>

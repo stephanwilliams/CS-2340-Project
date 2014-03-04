@@ -1,7 +1,10 @@
 package com.team19.cs2340;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.team19.cs2340.finance.FinanceDataException;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.support.v4.app.NavUtils;
+import android.text.format.DateFormat;
 
 public class TransactionCreationActivity extends Activity {
 private IFinanceDataService fds; 
@@ -38,30 +42,35 @@ private IFinanceDataService fds;
 		return true;
 	}
 	
-	public void onSubmit(View view) {
+	public void onSubmit(View view) throws ParseException {
 		EditText type = (EditText)findViewById(R.id.editText1);
 		EditText reason = (EditText)findViewById(R.id.editText2);
 		EditText category = (EditText)findViewById(R.id.editText3);
 		EditText amount = (EditText)findViewById(R.id.editText4);
-		DatePicker date = (DatePicker)findViewById(R.id.datePicker1);
+		EditText date = (EditText)findViewById(R.id.editText5);
 		TransactionType t;
-		if (type.toString() == "WITHDRAWAL")
+		if (type.toString() == "WITHDRAWAL" || type.toString() == "withdraw" || 
+				type.toString() == "Withdraw"|| type.toString() == "withdrawal" || 
+				type.toString() == "Withdrawal")
 			t = TransactionType.WITHDRAWAL;
 		else
 			t = TransactionType.DEPOSIT;
+				
+		SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+		Date d = df.parse(date.getText().toString());
 		
-		Calendar calendar = new GregorianCalendar(date.getYear(),
-				date.getMonth(),
-				date.getDayOfMonth());
-		
+		Calendar calendar = new GregorianCalendar(d.getYear()+1900,
+				d.getMonth()+1,
+				d.getDate());
+	     
 		Intent intent = getIntent();
 		try {
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
 					t,
-					category.toString(),
-					new BigDecimal(amount.toString()),
-					reason.toString());
+					category.getText().toString(),
+					new BigDecimal(amount.getText().toString()),
+					reason.getText().toString());
 					
 			
 			Intent goUp = new Intent(this, TransactionListActivity.class);

@@ -42,7 +42,7 @@
         android:ems="10"
         android:hint="Monthly Interest Rate"
         android:inputType="numberDecimal" />
-
+		
     <EditText
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
