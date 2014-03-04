@@ -1,6 +1,5 @@
 package com.team19.cs2340;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import android.app.Activity;
@@ -8,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import java.text.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,11 +20,11 @@ import android.widget.TextView;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
-import com.team19.cs2340.user.IUser;
+import com.team19.cs2340.transaction.ITransaction;
 
 public class TransactionListActivity extends Activity {
 	IFinanceDataService fds = null;
-	IUser user;
+	IAccount account;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +32,15 @@ public class TransactionListActivity extends Activity {
 		setContentView(R.layout.activity_transaction_list);
 		
 		Intent intent = getIntent();
-		user = (IUser) intent.getSerializableExtra("user");
+		account = (IAccount) intent.getSerializableExtra("account");
 		
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
 		try {
-			List<IAccount> accounts = fds.getAccounts(user);
-			ArrayAdapter<IAccount> adapter = new AccountListAdapter(this, R.layout.account_list_item, accounts);
+			List<ITransaction> transactions = fds.getTransactions(account);
+			ArrayAdapter<ITransaction> adapter = new TransactionListAdapter(this, R.layout.transaction_list, transactions);
 			
-			ListView listView = (ListView)findViewById(R.id.account_list);
+			ListView listView = (ListView)findViewById(R.id.transaction_list);
 			listView.setAdapter(adapter);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class TransactionListActivity extends Activity {
 		
 		setupActionBar();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -67,7 +67,7 @@ public class TransactionListActivity extends Activity {
 		//do update stuff here
 		super.onResume();
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -81,34 +81,35 @@ public class TransactionListActivity extends Activity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
-		case R.id.action_add_account:
+		case R.id.action_add_transaction:
 			Intent intent = new Intent(this, AccountCreationActivity.class);
-    		intent.putExtra("user", user);
+    		intent.putExtra("account", account);
         	startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private class AccountListAdapter extends ArrayAdapter<IAccount> {
+	private class TransactionListAdapter extends ArrayAdapter<ITransaction> {
 
-		public AccountListAdapter(Context context, int resource,
-				List<IAccount> objects) {
+		public TransactionListAdapter(Context context, int resource,
+				List<ITransaction> objects) {
 			super(context, resource, objects);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			IAccount account = getItem(position);
+			ITransaction transaction = getItem(position);
 
 			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.account_list_item, parent, false);
-
-			TextView accountDisplayName = (TextView)rowView.findViewById(R.id.account_display_name);
-			accountDisplayName.setText(account.getDisplayName());
+			View rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
 			
-			TextView accountBalance = (TextView)rowView.findViewById(R.id.account_balance);
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			accountBalance.setText(format.format(account.getBalance().doubleValue()));
+			TextView transactionDisplayName = (TextView)rowView.findViewById(R.id.transaction_display_name);
+			transactionDisplayName.setText(transaction.getDisplayName());
+			
+			TextView transactionDate = (TextView)rowView.findViewById(R.id.transaction_date);
+			DateFormat format = DateFormat.getDateInstance();
+			String date = format.format(transaction.getDate());
+			transactionDate.setText(date);
 
 			return rowView;
 		}
