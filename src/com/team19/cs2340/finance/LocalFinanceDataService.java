@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.team19.cs2340.DatabaseHelper;
+import com.team19.cs2340.finance.ITransaction.TransactionType;
 import com.team19.cs2340.user.IUser;
 
 class LocalFinanceDataService implements IFinanceDataService{
@@ -27,7 +28,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 		ContentValues cv = new ContentValues();
 		cv.put("username", user.getUsername());
 		cv.put("fullName", fullName);
-		cv.put("displayName", displayName);
+		cv.put("displayName", displayName);	
 		cv.put("balance", balance.toString());
 		cv.put("monthlyInterest", monthlyInterest.toString());
 
@@ -39,6 +40,23 @@ class LocalFinanceDataService implements IFinanceDataService{
 			return getAccount(user, id);
 		}
 	}
+	
+	@Override
+	public ITransaction createTransaction(IAccount account, long addedDate,
+			TransactionType type, String category, BigDecimal amount)
+			throws FinanceDataException {
+		
+		ContentValues cv = new ContentValues();
+		cv.put("effectiveDate", addedDate);
+		cv.put("type", type.ordinal());
+		cv.put("category", category);
+		cv.put("amount", amount.toString());
+		
+		return null;
+	}
+
+	
+
 	
 	@Override
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
@@ -86,6 +104,28 @@ class LocalFinanceDataService implements IFinanceDataService{
 			accounts.add(getAccount(user, cursor.getLong(0)));
 		}
 		return accounts;
+	}
+
+
+	@Override
+	public List<IAccount> getTransactions(IAccount account)
+			throws FinanceDataException {
+		Cursor cursor = 
+				db.query("transactions",
+						new String[] {"_id"},
+						"account = ?",
+						new long[] {account.getAccountId()},
+						null,
+						null,
+						null,
+						null,
+						null
+						);
+				List<ITransaction> transactions = new ArrayList<ITransaction>();
+				while(cursor.moveToNext()){
+					transactions.add(getTransaction(account, cursor.getLong(0)));
+				}
+				return transactions;
 	}
 	
 }
