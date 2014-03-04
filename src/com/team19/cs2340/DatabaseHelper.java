@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	
-	public static final int VERSION = 2;
+	public static final int VERSION = 3;
 	public static final String DATABASE_NAME = "finance.db";
 	
 	public DatabaseHelper(Context context) {
@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE transactions ("
 				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "account INTEGER NOT NULL,"
-				+ "addedTimestamp INTEGER NOT NULL,"
+				+ "addedTimestamp INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,"
 				+ "effectiveTimestamp INTEGER NOT NULL,"
 				+ "type INTEGER NOT NULL,"
 				+ "amount TEXT NOT NULL,"
