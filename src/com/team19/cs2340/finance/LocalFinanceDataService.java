@@ -43,7 +43,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 	
 	@Override
 	public ITransaction createTransaction(IAccount account, long addedDate,
-			TransactionType type, String category, BigDecimal amount)
+			TransactionType type, String category, BigDecimal amount, String reason)
 			throws FinanceDataException {
 		
 		ContentValues cv = new ContentValues();
@@ -51,6 +51,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 		cv.put("type", type.ordinal());
 		cv.put("category", category);
 		cv.put("amount", amount.toString());
+		cv.put("reason", reason);
 		
 		return null;
 	}

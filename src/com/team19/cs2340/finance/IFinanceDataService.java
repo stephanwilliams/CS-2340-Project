@@ -10,7 +10,7 @@ public interface IFinanceDataService {
 	public IAccount createAccount(IUser user, String fullName, String displayName,
 			BigDecimal balance, BigDecimal monthlyInterest) throws FinanceDataException;
 	public ITransaction createTransaction(IAccount account, long addedDate, TransactionType type,
-			String category, BigDecimal amount) throws FinanceDataException;
+			String category, BigDecimal amount, String reason) throws FinanceDataException;
 	
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException;
 	public List<IAccount> getAccounts(IUser user) throws FinanceDataException;

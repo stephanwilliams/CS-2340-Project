@@ -16,5 +16,6 @@ public interface ITransaction extends Serializable {
 	public TransactionType getType();
 	public String getCategory();
 	public BigDecimal getAmount();
+	public String getReason();
 }
 

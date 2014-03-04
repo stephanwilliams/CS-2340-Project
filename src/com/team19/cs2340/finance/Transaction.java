@@ -9,15 +9,16 @@ class Transaction implements ITransaction {
 	private String category;
 	private BigDecimal amount;
 	private TransactionType type;
-	
+	private String reason;
 	
 	public Transaction(long addedTimestamp, long effectiveTimestamp,
-			TransactionType type, BigDecimal amount, String category) {
+			TransactionType type, BigDecimal amount, String category, String reason) {
 		this.addedTimestamp = addedTimestamp;
 		this.effectiveTimestamp = effectiveTimestamp;
 		this.type = type;
 		this.amount = amount;
 		this.category = category;
+		this.reason = reason;
 	}
 	
 	@Override
@@ -42,6 +43,12 @@ class Transaction implements ITransaction {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getReason(){
+		return reason;
+	}
+	public void setReason(String reason){
+		this.reason = reason;
 	}
 	
 	@Override
