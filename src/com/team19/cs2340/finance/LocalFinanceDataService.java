@@ -149,7 +149,8 @@ class LocalFinanceDataService implements IFinanceDataService{
 						cursor.getLong(3),
 						ITransaction.TransactionType.values()[cursor.getInt(4)],
 						new BigDecimal(cursor.getString(5)),
-						cursor.getString(6));
+						cursor.getString(6),
+						cursor.getString(7));
 				return transaction;
 			}
 		}
