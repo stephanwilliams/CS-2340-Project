@@ -12,11 +12,12 @@ class Transaction implements ITransaction {
 	
 	
 	public Transaction(long addedTimestamp, long effectiveTimestamp,
-			String category, BigDecimal amount) {
+			TransactionType type, BigDecimal amount, String category) {
 		this.addedTimestamp = addedTimestamp;
 		this.effectiveTimestamp = effectiveTimestamp;
-		this.category = category;
+		this.type = type;
 		this.amount = amount;
+		this.category = category;
 	}
 	
 	@Override

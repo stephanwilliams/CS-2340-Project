@@ -14,7 +14,7 @@ public interface IFinanceDataService {
 	
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException;
 	public List<IAccount> getAccounts(IUser user) throws FinanceDataException;
-	public List<IAccount> getTransactions(IAccount account) throws FinanceDataException;
+	public List<ITransaction> getTransactions(IAccount account) throws FinanceDataException;
 	
 	
 }

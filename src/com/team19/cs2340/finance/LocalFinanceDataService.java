@@ -108,24 +108,49 @@ class LocalFinanceDataService implements IFinanceDataService{
 
 
 	@Override
-	public List<IAccount> getTransactions(IAccount account)
+	public List<ITransaction> getTransactions(IAccount account)
 			throws FinanceDataException {
 		Cursor cursor = 
 				db.query("transactions",
-						new String[] {"_id"},
+						new String[] { "_id" },
 						"account = ?",
-						new long[] {account.getAccountId()},
+						new String[] { Long.toString(account.getAccountId()) },
 						null,
 						null,
-						null,
-						null,
-						null
-						);
-				List<ITransaction> transactions = new ArrayList<ITransaction>();
-				while(cursor.moveToNext()){
-					transactions.add(getTransaction(account, cursor.getLong(0)));
-				}
-				return transactions;
+						null);
+		List<ITransaction> transactions = new ArrayList<ITransaction>();
+		while(cursor.moveToNext()){
+			transactions.add(getTransaction(account, cursor.getLong(0)));
+		}
+		return transactions;
 	}
 	
+	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException {
+		Cursor cursor =
+				db.query("transactions",
+						new String[] {
+							"_id", "addedTimestamp", "effectiveTimestamp",
+							"type", "amount", "category" },
+						"_id = ? AND account = ?",
+						new String[] { Long.toString(transactionId),
+									   Long.toString(account.getAccountId()) },
+						null,
+						null,
+						null);
+		if (!cursor.moveToFirst()) {
+			throw new FinanceDataException("Transaction does not exist");
+		} else {
+			if (!(cursor.getLong(1) == account.getAccountId())) {
+				throw new FinanceDataException("Transaction does not belong to account");
+			} else {
+				ITransaction transaction = new Transaction(
+						cursor.getLong(2),
+						cursor.getLong(3),
+						ITransaction.TransactionType.values()[cursor.getInt(4)],
+						new BigDecimal(cursor.getString(5)),
+						cursor.getString(6));
+				return transaction;
+			}
+		}
+	}
 }
