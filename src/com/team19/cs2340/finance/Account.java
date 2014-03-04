@@ -3,6 +3,7 @@ package com.team19.cs2340.finance;
 import java.math.BigDecimal;
 
 public class Account implements IAccount {
+	private static final long serialVersionUID = 4048567527276603206L;
 	private long accountId;
 	private String fullName;
 	private String displayName;

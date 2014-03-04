@@ -1,8 +1,9 @@
 package com.team19.cs2340.finance;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public interface ITransaction {
+public interface ITransaction extends Serializable {
 	
 	public static enum TransactionType {
 		DEPOSIT,
