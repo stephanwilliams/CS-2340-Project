@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	
-	public static final int VERSION = 3;
+	public static final int VERSION = 4;
 	public static final String DATABASE_NAME = "finance.db";
 	
 	public DatabaseHelper(Context context) {
@@ -39,7 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "effectiveTimestamp INTEGER NOT NULL,"
 				+ "type INTEGER NOT NULL,"
 				+ "amount TEXT NOT NULL,"
-				+ "category TEXT NOT NULL"
+				+ "category TEXT NOT NULL,"
+				+ "reason TEXT"
 				+ ");");
 	}
 
