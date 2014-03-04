@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
     
     <TextView
-        android:id="@+id/transaction_display_name"
+        android:id="@+id/transaction_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -12,8 +12,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:padding="10dp"
-        android:textSize="20sp" />
-
+        android:textSize="15sp" 
+        android:text=""/>
+	
     <TextView
         android:id="@+id/transaction_date"
         android:layout_width="wrap_content"
@@ -22,8 +23,31 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
         android:gravity="right"
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:text=""
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/transaction_reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/transaction_category"
+        android:layout_alignBottom="@+id/transaction_category"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="94dp"
+        android:text=""
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/transaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/transaction_category"
+        android:layout_alignBottom="@+id/transaction_category"
+        android:layout_marginLeft="26dp"
+        android:layout_toRightOf="@+id/transaction_reason"
+        android:text=""
+        android:textSize="15sp" />
 
 </RelativeLayout>

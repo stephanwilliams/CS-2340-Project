@@ -15,5 +15,6 @@
     <string name="cancel">Cancel</string>
     <string name="title_activity_transaction_list">TransactionListActivity</string>
     <string name="action_add_transaction">Add Transaction</string>
+    <string name="title_activity_transaction_creation">TransactionCreationActivity</string>
 
 </resources>

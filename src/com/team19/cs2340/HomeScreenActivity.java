@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,11 +40,23 @@ public class HomeScreenActivity extends Activity {
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
 		try {
-			List<IAccount> accounts = fds.getAccounts(user);
+			final List<IAccount> accounts = fds.getAccounts(user);
 			ArrayAdapter<IAccount> adapter = new AccountListAdapter(this, R.layout.account_list_item, accounts);
 			
 			ListView listView = (ListView)findViewById(R.id.account_list);
 			listView.setAdapter(adapter);
+			listView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View view,
+						int pos, long id) {
+					
+					Intent intent = new Intent(HomeScreenActivity.this, TransactionListActivity.class);
+		    		intent.putExtra("account", accounts.get(pos));
+		        	startActivity(intent);
+				}
+			});
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,7 +85,7 @@ public class HomeScreenActivity extends Activity {
 		getMenuInflater().inflate(R.menu.home_screen, menu);
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -113,7 +127,7 @@ public class HomeScreenActivity extends Activity {
 			TextView accountBalance = (TextView)rowView.findViewById(R.id.account_balance);
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			accountBalance.setText(format.format(account.getBalance().doubleValue()));
-
+	
 			return rowView;
 		}
 		

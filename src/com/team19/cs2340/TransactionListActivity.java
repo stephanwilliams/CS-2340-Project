@@ -1,13 +1,14 @@
 package com.team19.cs2340;
 
+import java.text.DateFormat;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import java.text.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
-import com.team19.cs2340.transaction.ITransaction;
+import com.team19.cs2340.finance.ITransaction;
 
 public class TransactionListActivity extends Activity {
 	IFinanceDataService fds = null;
@@ -36,9 +37,16 @@ public class TransactionListActivity extends Activity {
 		
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
+		TextView fullName = (TextView)findViewById(R.id.textView1);
+		fullName.setText(account.getFullName());
+		
+		TextView balance = (TextView)findViewById(R.id.textView2);
+		balance.setText(account.getBalance().toString());
+		
+		
 		try {
 			List<ITransaction> transactions = fds.getTransactions(account);
-			ArrayAdapter<ITransaction> adapter = new TransactionListAdapter(this, R.layout.transaction_list, transactions);
+			ArrayAdapter<ITransaction> adapter = new TransactionListAdapter(this, R.layout.activity_transaction_list, transactions);
 			
 			ListView listView = (ListView)findViewById(R.id.transaction_list);
 			listView.setAdapter(adapter);
@@ -82,7 +90,7 @@ public class TransactionListActivity extends Activity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_add_transaction:
-			Intent intent = new Intent(this, AccountCreationActivity.class);
+			Intent intent = new Intent(this, TransactionCreationActivity.class);
     		intent.putExtra("account", account);
         	startActivity(intent);
 		}
@@ -95,22 +103,33 @@ public class TransactionListActivity extends Activity {
 				List<ITransaction> objects) {
 			super(context, resource, objects);
 		}
-
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ITransaction transaction = getItem(position);
-
+			
 			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
 			
-			TextView transactionDisplayName = (TextView)rowView.findViewById(R.id.transaction_display_name);
-			transactionDisplayName.setText(transaction.getDisplayName());
+			TextView category = (TextView)rowView.findViewById(R.id.transaction_category);
+			category.setText(transaction.getCategory());
 			
-			TextView transactionDate = (TextView)rowView.findViewById(R.id.transaction_date);
-			DateFormat format = DateFormat.getDateInstance();
-			String date = format.format(transaction.getDate());
-			transactionDate.setText(date);
-
+			TextView date = (TextView)rowView.findViewById(R.id.transaction_date);
+			DateFormat dformat = DateFormat.getDateInstance();
+			String formatedDate = dformat.format(transaction.getEffectiveTimestamp());
+			date.setText(formatedDate);
+			
+			TextView amount = (TextView)rowView.findViewById(R.id.transaction_amount);
+			if (transaction.getType() == ITransaction.TransactionType.WITHDRAWAL) 
+				amount.setTextColor(Color.RED);
+			else 
+				amount.setTextColor(Color.GREEN);
+			
+			amount.setText(transaction.getAmount().toString());
+			
+			TextView reason = (TextView)rowView.findViewById(R.id.transaction_reason);
+			reason.setText(transaction.getReason());
+			
 			return rowView;
 		}
 		
