@@ -1,6 +1,10 @@
 package com.team19.cs2340;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -41,11 +45,36 @@ public class TransactionListActivity extends Activity {
 		fullName.setText(account.getFullName());
 		
 		TextView balance = (TextView)findViewById(R.id.textView2);
-		balance.setText(account.getBalance().toString());
 		
 		
 		try {
 			List<ITransaction> transactions = fds.getTransactions(account);
+			Collections.sort(transactions,
+				new Comparator<ITransaction>() {
+					@Override
+					public int compare(ITransaction t1, ITransaction t2) {
+						int effective =  (int) (t2.getEffectiveTimestamp() - t1.getEffectiveTimestamp());
+						System.out.println("COMPARE " + t1.getReason() + " AND " + t2.getReason());
+						System.out.println("COMAPRED TRS " + effective);
+						if (effective == 0) {
+							System.out.println(t2.getAddedTimestamp());
+							System.out.println(t2.getEffectiveTimestamp());
+							int added = (int) (t2.getAddedTimestamp() - t1.getAddedTimestamp());
+							System.out.println("ADDED " + added);
+							return added;
+						}
+						else return effective;
+					}
+				}
+			);
+			BigDecimal sum = account.getBalance();
+			for (ITransaction trans : transactions) {
+				BigDecimal mult = BigDecimal.ONE;
+				if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult = mult.negate();
+				sum = sum.add(trans.getAmount().multiply(mult));
+			}
+			NumberFormat format = NumberFormat.getCurrencyInstance();
+			balance.setText(format.format(sum.doubleValue()));
 			ArrayAdapter<ITransaction> adapter = new TransactionListAdapter(this, R.layout.activity_transaction_list, transactions);
 			
 			ListView listView = (ListView)findViewById(R.id.transaction_list);
@@ -87,7 +116,10 @@ public class TransactionListActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+			Intent intnt = getIntent();
+			Intent goUp = new Intent(this, HomeScreenActivity.class);
+    		goUp.putExtra("user", intnt.getSerializableExtra("user"));
+			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		case R.id.action_add_transaction:
 			Intent intent = new Intent(this, TransactionCreationActivity.class);
@@ -120,12 +152,14 @@ public class TransactionListActivity extends Activity {
 			date.setText(formatedDate);
 			
 			TextView amount = (TextView)rowView.findViewById(R.id.transaction_amount);
-			if (transaction.getType() == ITransaction.TransactionType.WITHDRAWAL) 
+			if (transaction.getType() == ITransaction.TransactionType.WITHDRAWAL) {
 				amount.setTextColor(Color.RED);
-			else 
-				amount.setTextColor(Color.GREEN);
+			} else { 
+				amount.setTextColor(Color.parseColor("#00AA00"));
+			}
 			
-			amount.setText(transaction.getAmount().toString());
+			NumberFormat format = NumberFormat.getCurrencyInstance();
+			amount.setText(format.format(transaction.getAmount().doubleValue()));
 			
 			TextView reason = (TextView)rowView.findViewById(R.id.transaction_reason);
 			reason.setText(transaction.getReason());

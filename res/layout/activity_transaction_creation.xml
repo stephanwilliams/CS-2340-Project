@@ -8,34 +8,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TransactionCreationActivity" >
 
-  <EditText
-        android:id="@+id/editText1"
+    <Spinner
+        android:id="@+id/spinner1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
-        android:ems="10"
-        android:hint="Type"
-        android:inputType="text">
-        <requestFocus />
-    </EditText>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <EditText
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_alignRight="@+id/spinner1"
+        android:layout_below="@id/spinner1"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Reason"
         android:inputType="text" />
-    
+
     <EditText
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText2"
+        android:layout_alignRight="@+id/editText2"
         android:layout_below="@+id/editText2"
         android:ems="10"
         android:hint="Category"
@@ -46,27 +44,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText3"
+        android:layout_alignRight="@+id/editText3"
         android:layout_below="@+id/editText3"
         android:ems="10"
         android:hint="Transaction Amount"
         android:inputType="numberDecimal" />
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_alignRight="@+id/editText4"
-        android:onClick="onSubmit"
-        android:text="@string/submit" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText4"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_marginBottom="54dp"
         android:onClick="onCancel"
         android:text="@string/cancel" />
@@ -76,9 +66,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText4"
+        android:layout_alignRight="@+id/editText4"
         android:layout_below="@+id/editText4"
         android:ems="10"
-         android:hint="Date"
+        android:hint="Date"
         android:inputType="date" />
-    
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="14dp"
+        android:onClick="onSubmit"
+        android:text="@string/submit" />
+
 </RelativeLayout>

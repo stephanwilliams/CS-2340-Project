@@ -42,18 +42,24 @@ class LocalFinanceDataService implements IFinanceDataService{
 	}
 	
 	@Override
-	public ITransaction createTransaction(IAccount account, long addedDate,
+	public ITransaction createTransaction(IAccount account, long effectiveTimestamp,
 			TransactionType type, String category, BigDecimal amount, String reason)
 			throws FinanceDataException {
 		
 		ContentValues cv = new ContentValues();
-		cv.put("effectiveDate", addedDate);
+		cv.put("account", account.getAccountId());
+		cv.put("effectiveTimestamp", effectiveTimestamp);
 		cv.put("type", type.ordinal());
 		cv.put("category", category);
 		cv.put("amount", amount.toString());
 		cv.put("reason", reason);
 		
-		return null;
+		long id = db.insert("transactions", null, cv);
+		if (id == -1) {
+			throw new FinanceDataException("Transaction creation failed");
+		} else {
+			return getTransaction(account, id);
+		}
 	}
 
 	
@@ -130,8 +136,8 @@ class LocalFinanceDataService implements IFinanceDataService{
 		Cursor cursor =
 				db.query("transactions",
 						new String[] {
-							"_id", "addedTimestamp", "effectiveTimestamp",
-							"type", "amount", "category" },
+							"_id", "account", "addedTimestamp", "effectiveTimestamp",
+							"type", "amount", "category", "reason" },
 						"_id = ? AND account = ?",
 						new String[] { Long.toString(transactionId),
 									   Long.toString(account.getAccountId()) },

@@ -1,5 +1,6 @@
 package com.team19.cs2340;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -19,9 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.team19.cs2340.finance.FinanceDataException;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
+import com.team19.cs2340.finance.ITransaction;
 import com.team19.cs2340.user.IUser;
 
 public class HomeScreenActivity extends Activity {
@@ -53,6 +56,7 @@ public class HomeScreenActivity extends Activity {
 					
 					Intent intent = new Intent(HomeScreenActivity.this, TransactionListActivity.class);
 		    		intent.putExtra("account", accounts.get(pos));
+		    		intent.putExtra("user", user);
 		        	startActivity(intent);
 				}
 			});
@@ -126,7 +130,18 @@ public class HomeScreenActivity extends Activity {
 			
 			TextView accountBalance = (TextView)rowView.findViewById(R.id.account_balance);
 			NumberFormat format = NumberFormat.getCurrencyInstance();
-			accountBalance.setText(format.format(account.getBalance().doubleValue()));
+			BigDecimal sum = account.getBalance();
+			try {
+				List<ITransaction> transactions = fds.getTransactions(account);
+				for (ITransaction trans : transactions) {
+					BigDecimal mult = BigDecimal.ONE;
+					if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult.negate();
+					sum = sum.add(trans.getAmount().multiply(mult));
+				}
+			} catch (FinanceDataException e) {
+				e.printStackTrace();
+			}
+			accountBalance.setText(format.format(sum.doubleValue()));
 	
 			return rowView;
 		}

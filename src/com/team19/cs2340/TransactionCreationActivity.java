@@ -7,32 +7,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
 import com.team19.cs2340.finance.FinanceDataException;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.finance.ITransaction.TransactionType;
-import com.team19.cs2340.user.IUser;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.support.v4.app.NavUtils;
-import android.text.format.DateFormat;
 
 public class TransactionCreationActivity extends Activity {
-private IFinanceDataService fds; 
+	private IFinanceDataService fds; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transaction_creation);
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
+		
+		Spinner spinner = (Spinner)findViewById(R.id.spinner1);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.transaction_types, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+		spinner.setAdapter(adapter);
 	}
 	
 	@Override
@@ -43,18 +47,12 @@ private IFinanceDataService fds;
 	}
 	
 	public void onSubmit(View view) throws ParseException {
-		EditText type = (EditText)findViewById(R.id.editText1);
+		Spinner type = (Spinner)findViewById(R.id.spinner1);
 		EditText reason = (EditText)findViewById(R.id.editText2);
 		EditText category = (EditText)findViewById(R.id.editText3);
 		EditText amount = (EditText)findViewById(R.id.editText4);
 		EditText date = (EditText)findViewById(R.id.editText5);
-		TransactionType t;
-		if (type.toString() == "WITHDRAWAL" || type.toString() == "withdraw" || 
-				type.toString() == "Withdraw"|| type.toString() == "withdrawal" || 
-				type.toString() == "Withdrawal")
-			t = TransactionType.WITHDRAWAL;
-		else
-			t = TransactionType.DEPOSIT;
+		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
 				
 		SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
 		Date d = df.parse(date.getText().toString());
@@ -67,7 +65,7 @@ private IFinanceDataService fds;
 		try {
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
-					t,
+					transactionType,
 					category.getText().toString(),
 					new BigDecimal(amount.getText().toString()),
 					reason.getText().toString());
@@ -77,7 +75,7 @@ private IFinanceDataService fds;
     		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
 			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
-
+			e.printStackTrace();
 		}		
 	}
 	
