@@ -144,14 +144,15 @@ public class TransactionListActivity extends Activity {
 			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
 			
+			// set category
 			TextView category = (TextView)rowView.findViewById(R.id.transaction_category);
 			category.setText(transaction.getCategory());
 			
-			TextView date = (TextView)rowView.findViewById(R.id.transaction_date);
-			DateFormat dformat = DateFormat.getDateInstance();
-			String formatedDate = dformat.format(transaction.getEffectiveTimestamp());
-			date.setText(formatedDate);
+			// set reason
+			TextView reason = (TextView)rowView.findViewById(R.id.transaction_reason);
+			reason.setText(transaction.getReason());
 			
+			// set amount
 			TextView amount = (TextView)rowView.findViewById(R.id.transaction_amount);
 			if (transaction.getType() == ITransaction.TransactionType.WITHDRAWAL) {
 				amount.setTextColor(Color.RED);
@@ -162,8 +163,11 @@ public class TransactionListActivity extends Activity {
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			amount.setText(format.format(transaction.getAmount().doubleValue()));
 			
-			TextView reason = (TextView)rowView.findViewById(R.id.transaction_reason);
-			reason.setText(transaction.getReason());
+			// set date
+			TextView date = (TextView)rowView.findViewById(R.id.transaction_date);
+			DateFormat dformat = DateFormat.getDateInstance();
+			String formatedDate = dformat.format(transaction.getEffectiveTimestamp());
+			date.setText(formatedDate);
 			
 			return rowView;
 		}
