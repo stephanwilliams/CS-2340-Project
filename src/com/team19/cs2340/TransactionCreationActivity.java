@@ -53,18 +53,10 @@ public class TransactionCreationActivity extends Activity {
 		EditText reason = (EditText)findViewById(R.id.editText2);
 		EditText category = (EditText)findViewById(R.id.editText3);
 		EditText amount = (EditText)findViewById(R.id.editText4);
-		EditText date = (EditText)findViewById(R.id.editText5);
+		DialogDatePicker date = (DialogDatePicker)findViewById(R.id.editText5);
 		
+		Calendar calendar = date.getCalendar();
 		
-		
-		
-				
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		Date d = df.parse(date.getText().toString());
-		
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(d);
-	     
 		Intent intent = getIntent();
 
 		
