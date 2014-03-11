@@ -69,9 +69,7 @@ public class TransactionListActivity extends Activity {
 			);
 			BigDecimal sum = account.getBalance();
 			for (ITransaction trans : transactions) {
-				BigDecimal mult = BigDecimal.ONE;
-				if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult = mult.negate();
-				sum = sum.add(trans.getAmount().multiply(mult));
+				sum = sum.add(trans.getAmount());
 			}
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			balance.setText(format.format(sum.doubleValue()));

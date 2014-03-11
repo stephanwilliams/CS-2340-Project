@@ -56,6 +56,9 @@ public class TransactionCreationActivity extends Activity {
 		
 		
 		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
+
+		BigDecimal adjustedAmount = new BigDecimal(amount.getText().toString());
+		if (transactionType == TransactionType.WITHDRAWAL) adjustedAmount = adjustedAmount.negate();
 				
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date d = df.parse(date.getText().toString());
@@ -69,7 +72,7 @@ public class TransactionCreationActivity extends Activity {
 					calendar.getTimeInMillis(),
 					transactionType,
 					category.getText().toString(),
-					new BigDecimal(amount.getText().toString()),
+					adjustedAmount,
 					reason.getText().toString());
 					
 			
