@@ -52,6 +52,9 @@ public class TransactionCreationActivity extends Activity {
 		EditText category = (EditText)findViewById(R.id.editText3);
 		EditText amount = (EditText)findViewById(R.id.editText4);
 		EditText date = (EditText)findViewById(R.id.editText5);
+		
+		
+		
 		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
 				
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");

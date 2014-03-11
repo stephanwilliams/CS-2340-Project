@@ -21,14 +21,14 @@ class LocalUserAccountService implements IUserAccountService {
 	}
 	
 	@Override
-	public IUser authenticateUser(String username, String password) throws FinanceException {
+	public IUser authenticateUser(String username, String password) throws UserAccountException {
 		IUser user = getUser(username);
 		if (user == null) return null;
 		String passwordHash = hashPassword(password);
 		if (user.getPasswordHash().equals(passwordHash)) {
 			return user;
 		} else {
-			throw new FinanceException("Invalid password");
+			throw new UserAccountException("Invalid password");
 		}
 	}
 	
@@ -45,21 +45,21 @@ class LocalUserAccountService implements IUserAccountService {
 	}
 	
 	@Override
-	public IUser createUser(String username, String password) throws FinanceException {
-		if (userExists(username)) throw new FinanceException("Username already exists");
+	public IUser createUser(String username, String password) throws UserAccountException {
+		if (userExists(username)) throw new UserAccountException("Username already exists");
 
 		ContentValues cv = new ContentValues();
 		cv.put("username", username);
 		cv.put("password", hashPassword(password));
 		long id = db.insert("users", null, cv);
 		if (id == -1) {
-			throw new FinanceException("Account creation failed");
+			throw new UserAccountException("Account creation failed");
 		} else {
 			return authenticateUser(username, password);
 		}
 	}
 	
-	private IUser getUser(String username) throws FinanceException {
+	private IUser getUser(String username) throws UserAccountException {
 		Cursor cursor = db.query("users",
 								 new String[] { "username", "password", "accountType" },
 								 "username = ?",
@@ -73,7 +73,7 @@ class LocalUserAccountService implements IUserAccountService {
 								   IUser.AccountType.values()[cursor.getInt(2)]);
 			return user;
 		} else {
-			throw new FinanceException("User does not exist");
+			throw new UserAccountException("User does not exist");
 		}
 	}
 	
