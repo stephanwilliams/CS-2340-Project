@@ -135,7 +135,7 @@ public class HomeScreenActivity extends Activity {
 				List<ITransaction> transactions = fds.getTransactions(account);
 				for (ITransaction trans : transactions) {
 					BigDecimal mult = BigDecimal.ONE;
-					if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult.negate();
+					if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult = mult.negate();
 					sum = sum.add(trans.getAmount().multiply(mult));
 				}
 			} catch (FinanceDataException e) {
