@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/transaction_category"
         android:layout_alignBottom="@+id/transaction_category"
-        android:layout_marginLeft="26dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="200dp"
         android:layout_toRightOf="@+id/transaction_reason"
         android:textSize="15sp" />
 
