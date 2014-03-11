@@ -89,13 +89,8 @@ public class TransactionCreationActivity extends Activity {
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
 					transactionType,
-<<<<<<< HEAD
-					category.getText().toString(),					
-					new BigDecimal(amount.getText().toString()),
-=======
 					category.getText().toString(),
 					adjustedAmount,
->>>>>>> 75b6eb771ed6a0425de0cec0e208762a8327d40a
 					reason.getText().toString());
 					
 			
