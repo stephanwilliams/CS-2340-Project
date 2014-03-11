@@ -23,6 +23,7 @@ import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.finance.ITransaction.TransactionType;
+import com.team19.cs2340.user.IUser;
 
 public class TransactionCreationActivity extends Activity {
 	private IFinanceDataService fds; 
@@ -78,6 +79,7 @@ public class TransactionCreationActivity extends Activity {
 			
 			Intent goUp = new Intent(this, TransactionListActivity.class);
     		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
 			e.printStackTrace();
@@ -88,6 +90,7 @@ public class TransactionCreationActivity extends Activity {
 		Intent intent = getIntent();
 		Intent goUp = new Intent(this, TransactionListActivity.class);
 		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 		NavUtils.navigateUpTo(this, goUp);
 	}
 	
@@ -105,6 +108,7 @@ public class TransactionCreationActivity extends Activity {
 			Intent intent = getIntent();
 			Intent goUp = new Intent(this, TransactionListActivity.class);
 			goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		}
