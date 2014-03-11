@@ -1,11 +1,10 @@
 package com.team19.cs2340.finance;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -181,5 +180,24 @@ class LocalFinanceDataService implements IFinanceDataService{
 				return transaction;
 			}
 		}
+	}
+
+	@Override
+	public Map<String, BigDecimal> getCategorySpendingReport(IUser user,
+			long startTimestamp, long endTimestamp) {
+		Cursor cursor = db.rawQuery(
+					"SELECT transactions.category, sum(transactions.amount) "
+				  + "FROM transactions "
+				  + "JOIN accounts ON transactions.account = accounts._id "
+				  + "WHERE accounts.username = ? "
+				  + "AND transactions.effectiveDate >= ? "
+				  + "AND transactions.effectiveDate <= ? "
+				  + "GROUP BY transactions.category",
+				  new String[] { user.getUsername() , Long.toString(startTimestamp), Long.toString(endTimestamp) });
+		Map<String, BigDecimal> categorySpending = new HashMap<String, BigDecimal>();
+		while (cursor.moveToNext()) {
+			categorySpending.put(cursor.getString(0), new BigDecimal(cursor.getString(1)));
+		}
+		return categorySpending;
 	}
 }
