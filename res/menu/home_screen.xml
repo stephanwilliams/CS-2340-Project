@@ -6,7 +6,6 @@
         android:title="@string/action_add_account" android:showAsAction="always|withText"/>
 	 <item
         android:id="@+id/action_view_reports"
-        android:icon="@drawable/ic_action_new"
-        android:title="@string/action_view_reports" android:showAsAction="always|withText"/>
+        android:title="@string/action_view_reports" android:showAsAction="never|withText"/>
 	    
 </menu>

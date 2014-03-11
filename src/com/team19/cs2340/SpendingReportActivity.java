@@ -52,6 +52,27 @@ public class SpendingReportActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		spinner.setAdapter(adapter);
 		
+		
+		DialogDatePicker date1 = (DialogDatePicker)findViewById(R.id.datePicker1);
+		DialogDatePicker date2 = (DialogDatePicker)findViewById(R.id.datePicker2);
+
+		date1.addTextChangedListener(new TextWatcher(){
+	       @Override
+			public void afterTextChanged(Editable s) {
+	            remakeEverything();
+	        }
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+	        public void onTextChanged(CharSequence s, int start, int before, int count){}
+	    }); 
+		date2.addTextChangedListener(new TextWatcher(){
+	       @Override
+			public void afterTextChanged(Editable s) {
+	            remakeEverything();
+	        }
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+	        public void onTextChanged(CharSequence s, int start, int before, int count){}
+	    }); 
+		
 		remakeEverything();
 		
 		setupActionBar();
@@ -66,13 +87,6 @@ public class SpendingReportActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.spending_report, menu);
-		return true;
-	}
-	
 	/*
 	 * Code to steal
 	 * 
@@ -95,7 +109,10 @@ public class SpendingReportActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+			Intent intent = getIntent();
+			Intent goUp = new Intent(this, HomeScreenActivity.class);
+    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
+			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -134,23 +151,6 @@ public class SpendingReportActivity extends Activity {
 			
 			DialogDatePicker date2 = (DialogDatePicker)findViewById(R.id.datePicker2);
 			Calendar cal2 = date2.getCalendar();
-			
-			date1.addTextChangedListener(new TextWatcher(){
-		       @Override
-				public void afterTextChanged(Editable s) {
-		            remakeEverything();
-		        }
-		        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-		        public void onTextChanged(CharSequence s, int start, int before, int count){}
-		    }); 
-			date2.addTextChangedListener(new TextWatcher(){
-		       @Override
-				public void afterTextChanged(Editable s) {
-		            remakeEverything();
-		        }
-		        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-		        public void onTextChanged(CharSequence s, int start, int before, int count){}
-		    }); 
 			
 			Map<String, BigDecimal> reportMap = fds.getCategorySpendingReport(user, 
 												cal1.getTimeInMillis(),

@@ -19,35 +19,51 @@ public class DialogDatePicker extends EditText {
 		
 		this.setInputType(0);
 		
-		calendar = GregorianCalendar.getInstance();
+		setCalendar(GregorianCalendar.getInstance());
 		
 		this.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DatePickerDialog datePickerDialog = new DatePickerDialog(
-						context,
-						new DatePickerDialog.OnDateSetListener() {
-							@Override
-							public void onDateSet(DatePicker view, int year, int monthOfYear,
-									int dayOfMonth) {
-								calendar.set(Calendar.YEAR, year);
-								calendar.set(Calendar.MONTH, monthOfYear);
-								calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-								refreshDisplay();
-							}
-						},
-						calendar.get(Calendar.YEAR),
-						calendar.get(Calendar.MONTH),
-						calendar.get(Calendar.DAY_OF_MONTH));
-				datePickerDialog.show();
+				showDatePicker();
+			}
+		});
+
+		this.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) showDatePicker();
 			}
 		});
 		
 		refreshDisplay();
 	}
 	
+	private void showDatePicker() {
+		DatePickerDialog datePickerDialog = new DatePickerDialog(
+				getContext(),
+				new DatePickerDialog.OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+						calendar.set(Calendar.YEAR, year);
+						calendar.set(Calendar.MONTH, monthOfYear);
+						calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+						refreshDisplay();
+					}
+				},
+				calendar.get(Calendar.YEAR),
+				calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DAY_OF_MONTH));
+		datePickerDialog.show();
+	}
+	
 	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
+		if (calendar == null) calendar = GregorianCalendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 		refreshDisplay();
 	}
 	
@@ -56,7 +72,6 @@ public class DialogDatePicker extends EditText {
 	}
 	
 	private void refreshDisplay() {
-		if (calendar == null) calendar = GregorianCalendar.getInstance();
 		this.setText((calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR));
 	}
 }
