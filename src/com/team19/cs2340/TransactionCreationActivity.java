@@ -24,6 +24,7 @@ import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.finance.ITransaction.TransactionType;
+import com.team19.cs2340.user.IUser;
 
 public class TransactionCreationActivity extends Activity {
 	private IFinanceDataService fds; 
@@ -57,6 +58,9 @@ public class TransactionCreationActivity extends Activity {
 		
 		
 		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
+
+		BigDecimal adjustedAmount = new BigDecimal(amount.getText().toString());
+		if (transactionType == TransactionType.WITHDRAWAL) adjustedAmount = adjustedAmount.negate();
 				
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date d = df.parse(date.getText().toString());
@@ -85,13 +89,19 @@ public class TransactionCreationActivity extends Activity {
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
 					transactionType,
+<<<<<<< HEAD
 					category.getText().toString(),					
 					new BigDecimal(amount.getText().toString()),
+=======
+					category.getText().toString(),
+					adjustedAmount,
+>>>>>>> 75b6eb771ed6a0425de0cec0e208762a8327d40a
 					reason.getText().toString());
 					
 			
 			Intent goUp = new Intent(this, TransactionListActivity.class);
     		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
 			e.printStackTrace();
@@ -102,6 +112,7 @@ public class TransactionCreationActivity extends Activity {
 		Intent intent = getIntent();
 		Intent goUp = new Intent(this, TransactionListActivity.class);
 		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 		NavUtils.navigateUpTo(this, goUp);
 	}
 	
@@ -119,6 +130,7 @@ public class TransactionCreationActivity extends Activity {
 			Intent intent = getIntent();
 			Intent goUp = new Intent(this, TransactionListActivity.class);
 			goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
+    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		}

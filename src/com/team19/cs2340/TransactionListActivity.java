@@ -26,10 +26,12 @@ import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.finance.ITransaction;
+import com.team19.cs2340.user.IUser;
 
 public class TransactionListActivity extends Activity {
 	IFinanceDataService fds = null;
 	IAccount account;
+	IUser user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class TransactionListActivity extends Activity {
 		
 		Intent intent = getIntent();
 		account = (IAccount) intent.getSerializableExtra("account");
+		user = (IUser)intent.getSerializableExtra("user");
 		
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
@@ -69,9 +72,7 @@ public class TransactionListActivity extends Activity {
 			);
 			BigDecimal sum = account.getBalance();
 			for (ITransaction trans : transactions) {
-				BigDecimal mult = BigDecimal.ONE;
-				if (trans.getType().equals(ITransaction.TransactionType.WITHDRAWAL)) mult = mult.negate();
-				sum = sum.add(trans.getAmount().multiply(mult));
+				sum = sum.add(trans.getAmount());
 			}
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			balance.setText(format.format(sum.doubleValue()));
@@ -116,14 +117,14 @@ public class TransactionListActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			Intent intnt = getIntent();
 			Intent goUp = new Intent(this, HomeScreenActivity.class);
-    		goUp.putExtra("user", intnt.getSerializableExtra("user"));
+    		goUp.putExtra("user", user);
 			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		case R.id.action_add_transaction:
 			Intent intent = new Intent(this, TransactionCreationActivity.class);
     		intent.putExtra("account", account);
+    		intent.putExtra("user", user);
         	startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
