@@ -57,10 +57,7 @@ public class TransactionCreationActivity extends Activity {
 		
 		
 		
-		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
-
-		BigDecimal adjustedAmount = new BigDecimal(amount.getText().toString());
-		if (transactionType == TransactionType.WITHDRAWAL) adjustedAmount = adjustedAmount.negate();
+		
 				
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date d = df.parse(date.getText().toString());
@@ -72,6 +69,8 @@ public class TransactionCreationActivity extends Activity {
 
 		
 		try {
+			
+			
 			TextView textView1 = (TextView) findViewById(R.id.textView1);
 			if(amount.getText().toString().equals("")){
 				textView1.setText("Not a Valid Amount");
@@ -85,6 +84,12 @@ public class TransactionCreationActivity extends Activity {
 				textView1.setText("Not a Valid Category");
 				throw new FinanceDataException("Not a Valid Category");
 			}
+			
+			TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
+
+			BigDecimal adjustedAmount = new BigDecimal(amount.getText().toString());
+			if (transactionType == TransactionType.WITHDRAWAL) adjustedAmount = adjustedAmount.negate();
+			
 			
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
