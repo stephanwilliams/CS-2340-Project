@@ -107,6 +107,12 @@ public class HomeScreenActivity extends Activity {
 			Intent intent = new Intent(this, AccountCreationActivity.class);
     		intent.putExtra("user", user);
         	startActivity(intent);
+        	return true;
+		case R.id.action_view_reports:
+			Intent intent2 = new Intent(this, SpendingReportActivity.class);
+    		intent2.putExtra("user", user);
+        	startActivity(intent2);
+        	return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

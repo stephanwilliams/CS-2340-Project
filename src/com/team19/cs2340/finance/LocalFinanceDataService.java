@@ -189,8 +189,8 @@ class LocalFinanceDataService implements IFinanceDataService{
 				  + "FROM transactions "
 				  + "JOIN accounts ON transactions.account = accounts._id "
 				  + "WHERE accounts.username = ? "
-				  + "AND transactions.effectiveDate >= ? "
-				  + "AND transactions.effectiveDate <= ? "
+				  + "AND transactions.effectiveTimestamp >= ? "
+				  + "AND transactions.effectiveTimestamp <= ? "
 				  + "GROUP BY transactions.category",
 				  new String[] { user.getUsername() , Long.toString(startTimestamp), Long.toString(endTimestamp) });
 		Map<String, BigDecimal> categorySpending = new HashMap<String, BigDecimal>();
