@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
 import com.team19.cs2340.user.IUserAccountService;
-import com.team19.cs2340.user.UserAccountException;
+import com.team19.cs2340.user.FinanceException;
 import com.team19.cs2340.user.UserAccountServiceFactory;
 
 public class RegistrationActivity extends Activity {
@@ -61,7 +61,7 @@ public class RegistrationActivity extends Activity {
 		    	Intent intent = new Intent(this, HomeScreenActivity.class);
 	    		intent.putExtra("user", user);
 	    		startActivity(intent);
-			} catch (UserAccountException uae) {
+			} catch (FinanceException uae) {
 				errorMessage.setText(uae.getMessage());
 			}
 		} else {

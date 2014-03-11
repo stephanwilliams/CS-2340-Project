@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.team19.cs2340.user.IUser;
 import com.team19.cs2340.user.IUserAccountService;
-import com.team19.cs2340.user.UserAccountException;
+import com.team19.cs2340.user.FinanceException;
 import com.team19.cs2340.user.UserAccountServiceFactory;
 
 public class LogInActivity extends Activity {
@@ -85,7 +85,7 @@ public class LogInActivity extends Activity {
 	    	Intent intent = new Intent(this, HomeScreenActivity.class);
     		intent.putExtra("user", user);
         	startActivity(intent);
-    	} catch (UserAccountException uae) {
+    	} catch (FinanceException uae) {
     		passwordInput.setText("");    
     		textView1.setText(uae.getMessage());
     	}
