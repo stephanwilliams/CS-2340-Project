@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.team19.cs2340.finance.FinanceDataException;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
@@ -46,7 +47,7 @@ public class TransactionCreationActivity extends Activity {
 		return true;
 	}
 	
-	public void onSubmit(View view) throws ParseException {
+	public void onSubmit(View view) throws ParseException, FinanceDataException {
 		Spinner type = (Spinner)findViewById(R.id.spinner1);
 		EditText reason = (EditText)findViewById(R.id.editText2);
 		EditText category = (EditText)findViewById(R.id.editText3);
@@ -64,11 +65,27 @@ public class TransactionCreationActivity extends Activity {
 		calendar.setTime(d);
 	     
 		Intent intent = getIntent();
+
+		
 		try {
+			TextView textView1 = (TextView) findViewById(R.id.textView1);
+			if(amount.getText().toString().equals("")){
+				textView1.setText("Not a Valid Amount");
+				throw new FinanceDataException("Not a Valid Amount");
+			}
+			if(reason.getText().toString().equals("")){
+				textView1.setText("Not a Valid Reason");
+				throw new FinanceDataException("Not a Valid Reason");
+			}
+			if(category.getText().toString().equals("")){
+				textView1.setText("Not a Valid Category");
+				throw new FinanceDataException("Not a Valid Category");
+			}
+			
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
 					calendar.getTimeInMillis(),
 					transactionType,
-					category.getText().toString(),
+					category.getText().toString(),					
 					new BigDecimal(amount.getText().toString()),
 					reason.getText().toString());
 					

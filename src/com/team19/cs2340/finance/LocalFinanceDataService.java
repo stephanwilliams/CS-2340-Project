@@ -10,8 +10,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 
 import com.team19.cs2340.DatabaseHelper;
+import com.team19.cs2340.R;
 import com.team19.cs2340.finance.ITransaction.TransactionType;
 import com.team19.cs2340.user.UserAccountException;
 import com.team19.cs2340.user.IUser;
@@ -50,19 +52,16 @@ class LocalFinanceDataService implements IFinanceDataService{
 			throws FinanceDataException {
 		
 		boolean success = true;
-		
+	
 		//Here Lies Michael's Code
-		if(category.equalsIgnoreCase("")){
-			throw new FinanceDataException("Invalid Category");
-			success = false;
-		}
-		if(amount.compareTo(BigDecimal.ZERO)==0){
-			throw new FinanceDataException("Invalid Amount");
-		}
-		if(reason.equalsIgnoreCase("")){
-			throw new FinanceDataException("Invalid Reason");
-		}
-		
+//		if(category.equalsIgnoreCase("")){
+//			textView1.setText("Invalid Category");
+//			throw new FinanceDataException("Invalid Category");
+//		}
+//		if(reason.equalsIgnoreCase("")){
+//			throw new FinanceDataException("Invalid Reason");
+//		}
+//		
 		
 		
 		ContentValues cv = new ContentValues();
