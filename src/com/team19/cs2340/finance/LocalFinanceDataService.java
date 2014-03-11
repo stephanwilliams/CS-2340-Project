@@ -1,8 +1,11 @@
 package com.team19.cs2340.finance;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -48,6 +51,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 		
 		ContentValues cv = new ContentValues();
 		cv.put("account", account.getAccountId());
+		cv.put("addedTimestamp", System.currentTimeMillis());
 		cv.put("effectiveTimestamp", effectiveTimestamp);
 		cv.put("type", type.ordinal());
 		cv.put("category", category);

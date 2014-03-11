@@ -54,12 +54,11 @@ public class TransactionCreationActivity extends Activity {
 		EditText date = (EditText)findViewById(R.id.editText5);
 		TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
 				
-		SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date d = df.parse(date.getText().toString());
 		
-		Calendar calendar = new GregorianCalendar(d.getYear()+1900,
-				d.getMonth()+1,
-				d.getDate());
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(d);
 	     
 		Intent intent = getIntent();
 		try {
