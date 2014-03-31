@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.team19.cs2340.finance.FinanceDataException;
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
@@ -40,14 +41,14 @@ public class TransactionListActivity extends Activity {
 		
 		Intent intent = getIntent();
 		account = (IAccount) intent.getSerializableExtra("account");
-		user = (IUser)intent.getSerializableExtra("user");
+		user = (IUser) intent.getSerializableExtra("user");
 		
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
-		TextView fullName = (TextView)findViewById(R.id.textView1);
+		TextView fullName = (TextView) findViewById(R.id.textView1);
 		fullName.setText(account.getFullName());
 		
-		TextView balance = (TextView)findViewById(R.id.textView2);
+		TextView balance = (TextView) findViewById(R.id.textView2);
 		
 		
 		try {
@@ -65,8 +66,10 @@ public class TransactionListActivity extends Activity {
 							int added = (int) (t2.getAddedTimestamp() - t1.getAddedTimestamp());
 							System.out.println("ADDED " + added);
 							return added;
-						}
-						else return effective;
+						} 
+						else {
+                            return effective;
+                        }
 					}
 				}
 			);
@@ -78,10 +81,13 @@ public class TransactionListActivity extends Activity {
 			balance.setText(format.format(sum.doubleValue()));
 			ArrayAdapter<ITransaction> adapter = new TransactionListAdapter(this, R.layout.activity_transaction_list, transactions);
 			
-			ListView listView = (ListView)findViewById(R.id.transaction_list);
+			ListView listView = (ListView) findViewById(R.id.transaction_list);
 			listView.setAdapter(adapter);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
+		}
+		catch (FinanceDataException e) {
+		    e.printStackTrace();
 		}
 		
 		setupActionBar();
@@ -126,11 +132,13 @@ public class TransactionListActivity extends Activity {
     		intent.putExtra("account", account);
     		intent.putExtra("user", user);
         	startActivity(intent);
+        	return true;
+        default: 
+            return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 	
-	private class TransactionListAdapter extends ArrayAdapter<ITransaction> {
+	private static class TransactionListAdapter extends ArrayAdapter<ITransaction> {
 
 		public TransactionListAdapter(Context context, int resource,
 				List<ITransaction> objects) {
@@ -141,19 +149,19 @@ public class TransactionListActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ITransaction transaction = getItem(position);
 			
-			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
 			
 			// set category
-			TextView category = (TextView)rowView.findViewById(R.id.transaction_category);
+			TextView category = (TextView) rowView.findViewById(R.id.transaction_category);
 			category.setText(transaction.getCategory());
 			
 			// set reason
-			TextView reason = (TextView)rowView.findViewById(R.id.transaction_reason);
+			TextView reason = (TextView) rowView.findViewById(R.id.transaction_reason);
 			reason.setText(transaction.getReason());
 			
 			// set amount
-			TextView amount = (TextView)rowView.findViewById(R.id.transaction_amount);
+			TextView amount = (TextView) rowView.findViewById(R.id.transaction_amount);
 			if (transaction.getType() == ITransaction.TransactionType.WITHDRAWAL) {
 				amount.setTextColor(Color.RED);
 			} else { 
@@ -164,7 +172,7 @@ public class TransactionListActivity extends Activity {
 			amount.setText(format.format(transaction.getAmount().doubleValue()));
 			
 			// set date
-			TextView date = (TextView)rowView.findViewById(R.id.transaction_date);
+			TextView date = (TextView) rowView.findViewById(R.id.transaction_date);
 			DateFormat dformat = DateFormat.getDateInstance();
 			String formatedDate = dformat.format(transaction.getEffectiveTimestamp());
 			date.setText(formatedDate);

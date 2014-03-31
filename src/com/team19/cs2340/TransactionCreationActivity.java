@@ -35,7 +35,7 @@ public class TransactionCreationActivity extends Activity {
 		setContentView(R.layout.activity_transaction_creation);
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
-		Spinner spinner = (Spinner)findViewById(R.id.spinner1);
+		Spinner spinner = (Spinner) findViewById(R.id.spinner1);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.transaction_types, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		spinner.setAdapter(adapter);
@@ -49,11 +49,11 @@ public class TransactionCreationActivity extends Activity {
 	}
 	
 	public void onSubmit(View view) throws ParseException, FinanceDataException {
-		Spinner type = (Spinner)findViewById(R.id.spinner1);
-		EditText reason = (EditText)findViewById(R.id.editText2);
-		EditText category = (EditText)findViewById(R.id.editText3);
-		EditText amount = (EditText)findViewById(R.id.editText4);
-		DialogDatePicker date = (DialogDatePicker)findViewById(R.id.editText5);
+		Spinner type = (Spinner) findViewById(R.id.spinner1);
+		EditText reason = (EditText) findViewById(R.id.editText2);
+		EditText category = (EditText) findViewById(R.id.editText3);
+		EditText amount = (EditText) findViewById(R.id.editText4);
+		DialogDatePicker date = (DialogDatePicker) findViewById(R.id.editText5);
 		
 		Calendar calendar = date.getCalendar();
 		
@@ -64,15 +64,15 @@ public class TransactionCreationActivity extends Activity {
 			
 			
 			TextView textView1 = (TextView) findViewById(R.id.textView1);
-			if(amount.getText().toString().equals("")){
+			if (amount.getText().toString().equals("")) {
 				textView1.setText("Not a Valid Amount");
 				throw new FinanceDataException("Not a Valid Amount");
 			}
-			if(reason.getText().toString().equals("")){
+			if (reason.getText().toString().equals("")) {
 				textView1.setText("Not a Valid Reason");
 				throw new FinanceDataException("Not a Valid Reason");
 			}
-			if(category.getText().toString().equals("")){
+			if (category.getText().toString().equals("")) {
 				textView1.setText("Not a Valid Category");
 				throw new FinanceDataException("Not a Valid Category");
 			}
@@ -80,7 +80,9 @@ public class TransactionCreationActivity extends Activity {
 			TransactionType transactionType = TransactionType.values()[type.getSelectedItemPosition()];
 
 			BigDecimal adjustedAmount = new BigDecimal(amount.getText().toString());
-			if (transactionType == TransactionType.WITHDRAWAL) adjustedAmount = adjustedAmount.negate();
+			if (transactionType == TransactionType.WITHDRAWAL) {
+                adjustedAmount = adjustedAmount.negate();
+            }
 			
 			
 			fds.createTransaction((IAccount) intent.getSerializableExtra("account"),
@@ -93,7 +95,7 @@ public class TransactionCreationActivity extends Activity {
 			
 			Intent goUp = new Intent(this, TransactionListActivity.class);
     		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
-    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
+    		goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 		} catch (FinanceDataException e) {
 			e.printStackTrace();
@@ -104,7 +106,7 @@ public class TransactionCreationActivity extends Activity {
 		Intent intent = getIntent();
 		Intent goUp = new Intent(this, TransactionListActivity.class);
 		goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
-		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
+		goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
 		NavUtils.navigateUpTo(this, goUp);
 	}
 	
@@ -122,7 +124,7 @@ public class TransactionCreationActivity extends Activity {
 			Intent intent = getIntent();
 			Intent goUp = new Intent(this, TransactionListActivity.class);
 			goUp.putExtra("account", (IAccount) intent.getSerializableExtra("account"));
-    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
+    		goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 			return true;
 		}

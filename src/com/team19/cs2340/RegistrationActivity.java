@@ -47,9 +47,9 @@ public class RegistrationActivity extends Activity {
 		TextView errorMessage = (TextView) findViewById(R.id.textView1);
 		errorMessage.setText("");
 		
-		EditText usernameInput = (EditText)findViewById(R.id.usernameInput);
-		EditText passwordInput = (EditText)findViewById(R.id.passwordInput);
-		EditText confirmPasswordInput = (EditText)findViewById(R.id.confirmPassword);
+		EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
+		EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
+		EditText confirmPasswordInput = (EditText) findViewById(R.id.confirmPassword);
 		
 		String username = usernameInput.getText().toString();
 		String passwordIn = passwordInput.getText().toString();

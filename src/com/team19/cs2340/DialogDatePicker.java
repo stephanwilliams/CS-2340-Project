@@ -31,7 +31,9 @@ public class DialogDatePicker extends EditText {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) showDatePicker();
+				if (hasFocus) {
+                    showDatePicker();
+                }
 			}
 		});
 		
@@ -59,7 +61,9 @@ public class DialogDatePicker extends EditText {
 	
 	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
-		if (calendar == null) calendar = GregorianCalendar.getInstance();
+		if (calendar == null) {
+            calendar = GregorianCalendar.getInstance();
+        }
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);

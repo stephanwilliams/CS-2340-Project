@@ -24,8 +24,7 @@ public class LogInActivity extends Activity {
 		setContentView(R.layout.activity_log_in);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		uas = UserAccountServiceFactory.createUserAccountService(this);
-		
+		uas = UserAccountServiceFactory.createUserAccountService(this);	
 	}
 
 	/**

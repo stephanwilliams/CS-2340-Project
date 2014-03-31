@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,7 +16,6 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.team19.cs2340.finance.FinanceDataServiceFactory;
-import com.team19.cs2340.finance.IAccount;
 import com.team19.cs2340.finance.IFinanceDataService;
-import com.team19.cs2340.finance.ITransaction;
 import com.team19.cs2340.user.IUser;
 
 public class SpendingReportActivity extends Activity {
@@ -45,32 +40,32 @@ public class SpendingReportActivity extends Activity {
 		fds = FinanceDataServiceFactory.createFinanceDataService(this);
 		
 		Intent intent = getIntent();
-		user = (IUser)intent.getSerializableExtra("user");
+		user = (IUser) intent.getSerializableExtra("user");
 		
-		Spinner spinner = (Spinner)findViewById(R.id.spendingType);
+		Spinner spinner = (Spinner) findViewById(R.id.spendingType);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.report_types, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		spinner.setAdapter(adapter);
 		
 		
-		DialogDatePicker date1 = (DialogDatePicker)findViewById(R.id.datePicker1);
-		DialogDatePicker date2 = (DialogDatePicker)findViewById(R.id.datePicker2);
+		DialogDatePicker date1 = (DialogDatePicker) findViewById(R.id.datePicker1);
+		DialogDatePicker date2 = (DialogDatePicker) findViewById(R.id.datePicker2);
 
-		date1.addTextChangedListener(new TextWatcher(){
+		date1.addTextChangedListener(new TextWatcher() {
 	       @Override
 			public void afterTextChanged(Editable s) {
 	            remakeEverything();
 	        }
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-	        public void onTextChanged(CharSequence s, int start, int before, int count){}
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+	        public void onTextChanged(CharSequence s, int start, int before, int count) {}
 	    }); 
 		date2.addTextChangedListener(new TextWatcher(){
 	       @Override
 			public void afterTextChanged(Editable s) {
 	            remakeEverything();
 	        }
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-	        public void onTextChanged(CharSequence s, int start, int before, int count){}
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+	        public void onTextChanged(CharSequence s, int start, int before, int count) {}
 	    }); 
 		
 		remakeEverything();
@@ -111,13 +106,14 @@ public class SpendingReportActivity extends Activity {
 			//
 			Intent intent = getIntent();
 			Intent goUp = new Intent(this, HomeScreenActivity.class);
-    		goUp.putExtra("user", (IUser)intent.getSerializableExtra("user"));
+    		goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
 			NavUtils.navigateUpTo(this, goUp);
 			return true;
+		 default: 
+	        return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
-	private class EntryListAdapter extends ArrayAdapter<Entry<String, BigDecimal>> {
+	private static class EntryListAdapter extends ArrayAdapter<Entry<String, BigDecimal>> {
 
 		public EntryListAdapter(Context context, int resource,
 				List<Entry<String, BigDecimal>> objects) {
@@ -128,13 +124,13 @@ public class SpendingReportActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Entry<String, BigDecimal> entry = getItem(position);
 			
-			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.spending_report_list_item, parent, false);
 			
-			TextView category = (TextView)rowView.findViewById(R.id.spending_report_display_name);
+			TextView category = (TextView) rowView.findViewById(R.id.spending_report_display_name);
 			category.setText(entry.getKey());
 			
-			TextView amount = (TextView)rowView.findViewById(R.id.spending_report_balance);
+			TextView amount = (TextView) rowView.findViewById(R.id.spending_report_balance);
 			
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			amount.setText(format.format(entry.getValue().doubleValue()));
@@ -146,10 +142,10 @@ public class SpendingReportActivity extends Activity {
 	public void remakeEverything() {
 		
 		try {
-			DialogDatePicker date1 = (DialogDatePicker)findViewById(R.id.datePicker1);
+			DialogDatePicker date1 = (DialogDatePicker) findViewById(R.id.datePicker1);
 			Calendar cal1 = date1.getCalendar();
 			
-			DialogDatePicker date2 = (DialogDatePicker)findViewById(R.id.datePicker2);
+			DialogDatePicker date2 = (DialogDatePicker) findViewById(R.id.datePicker2);
 			Calendar cal2 = date2.getCalendar();
 			
 			Map<String, BigDecimal> reportMap = fds.getCategorySpendingReport(user, 
@@ -162,13 +158,13 @@ public class SpendingReportActivity extends Activity {
 			//		x =0;
 			//	}
 			//}
-			List<Entry<String, BigDecimal>> reportMapArrays = new ArrayList<Map.Entry<String,BigDecimal>>(reportMap.entrySet());
+			List<Entry<String, BigDecimal>> reportMapArrays = new ArrayList<Map.Entry<String, BigDecimal>>(reportMap.entrySet());
 			
 			ArrayAdapter<Entry<String, BigDecimal>> adapter = new EntryListAdapter(this, R.layout.activity_spending_report, reportMapArrays);
 			
-			ListView listView = (ListView)findViewById(R.id.reportListView);
+			ListView listView = (ListView) findViewById(R.id.reportListView);
 			listView.setAdapter(adapter);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}

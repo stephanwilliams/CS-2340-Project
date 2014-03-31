@@ -36,10 +36,10 @@ public class AccountCreationActivity extends Activity {
 	
 	
 	public void onSubmit(View view) {
-		EditText fullName = (EditText)findViewById(R.id.editText1);
-		EditText displayName = (EditText)findViewById(R.id.editText2);
-		EditText balance = (EditText)findViewById(R.id.editText3);
-		EditText monthlyInterest = (EditText)findViewById(R.id.editText4);
+		EditText fullName = (EditText) findViewById(R.id.editText1);
+		EditText displayName = (EditText) findViewById(R.id.editText2);
+		EditText balance = (EditText) findViewById(R.id.editText3);
+		EditText monthlyInterest = (EditText) findViewById(R.id.editText4);
 		
 		//TODO Implement checking for exceptions
 		Intent intent = getIntent();

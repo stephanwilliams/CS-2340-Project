@@ -28,7 +28,8 @@ import com.team19.cs2340.finance.ITransaction;
 import com.team19.cs2340.user.IUser;
 
 public class HomeScreenActivity extends Activity {
-	IFinanceDataService fds = null;
+	/** The Finance Data Service object. */
+    IFinanceDataService fds = null;
 	IUser user;
 	
 	@Override
@@ -46,7 +47,7 @@ public class HomeScreenActivity extends Activity {
 			final List<IAccount> accounts = fds.getAccounts(user);
 			ArrayAdapter<IAccount> adapter = new AccountListAdapter(this, R.layout.account_list_item, accounts);
 			
-			ListView listView = (ListView)findViewById(R.id.account_list);
+			ListView listView = (ListView) findViewById(R.id.account_list);
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -61,8 +62,11 @@ public class HomeScreenActivity extends Activity {
 				}
 			});
 			
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
+		}
+		catch (FinanceDataException e) {
+		    e.printStackTrace();
 		}
 		
 		setupActionBar();
@@ -128,13 +132,13 @@ public class HomeScreenActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			IAccount account = getItem(position);
 
-			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.account_list_item, parent, false);
 
-			TextView accountDisplayName = (TextView)rowView.findViewById(R.id.account_display_name);
+			TextView accountDisplayName = (TextView) rowView.findViewById(R.id.account_display_name);
 			accountDisplayName.setText(account.getDisplayName());
 			
-			TextView accountBalance = (TextView)rowView.findViewById(R.id.account_balance);
+			TextView accountBalance = (TextView) rowView.findViewById(R.id.account_balance);
 			NumberFormat format = NumberFormat.getCurrencyInstance();
 			BigDecimal sum = account.getBalance();
 			try {
