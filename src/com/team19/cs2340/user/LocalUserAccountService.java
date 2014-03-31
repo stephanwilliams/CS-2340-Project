@@ -47,6 +47,9 @@ class LocalUserAccountService implements IUserAccountService {
 	@Override
 	public IUser createUser(String username, String password) throws UserAccountException {
 		if (userExists(username)) throw new UserAccountException("Username already exists");
+		if (!(username.length() > 0)) throw new UserAccountException("No username specified!");
+		if (!(password.length() > 0)) throw new UserAccountException("No password specified!");
+		
 
 		ContentValues cv = new ContentValues();
 		cv.put("username", username);
