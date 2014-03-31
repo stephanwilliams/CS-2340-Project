@@ -36,7 +36,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 		cv.put("displayName", displayName);	
 		cv.put("balance", balance.toString());
 		cv.put("monthlyInterest", monthlyInterest.toString());
-		
+
 		long id = db.insert("accounts", null, cv);
 
 		if (id == -1) {
@@ -86,14 +86,14 @@ class LocalFinanceDataService implements IFinanceDataService{
 	
 	@Override
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
+		if (user == null) throw new FinanceDataException("User must not be null");
 		Cursor cursor =
 			db.query("accounts",
 					 new String[] {
 						"_id", "username", "fullName", "displayName",
 						"balance", "monthlyInterest" },
-					 "_id = ? AND username = ?",
-					 new String[] {Long.toString(accountId),
-								   user.getUsername()},
+					 "_id = ?",
+					 new String[] { Long.toString(accountId) },
 					 null,
 					 null,
 					 null);
@@ -119,9 +119,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	public List<IAccount> getAccounts(IUser user) throws FinanceDataException {
 		Cursor cursor =
 				db.query("accounts",
-						 new String[] {"_id"},
+						 new String[] { "_id" },
 						 "username = ?",
-						 new String[] {user.getUsername()},
+						 new String[] { user.getUsername() },
 						 null,
 						 null,
 						 null);
@@ -138,14 +138,14 @@ class LocalFinanceDataService implements IFinanceDataService{
 			throws FinanceDataException {
 		Cursor cursor = 
 				db.query("transactions",
-						new String[] {"_id"},
+						new String[] { "_id" },
 						"account = ?",
-						new String[] {Long.toString(account.getAccountId())},
+						new String[] { Long.toString(account.getAccountId()) },
 						null,
 						null,
 						null);
 		List<ITransaction> transactions = new ArrayList<ITransaction>();
-		while (cursor.moveToNext()) {
+		while(cursor.moveToNext()){
 			transactions.add(getTransaction(account, cursor.getLong(0)));
 		}
 		return transactions;
@@ -158,8 +158,8 @@ class LocalFinanceDataService implements IFinanceDataService{
 							"_id", "account", "addedTimestamp", "effectiveTimestamp",
 							"type", "amount", "category", "reason" },
 						"_id = ? AND account = ?",
-						new String[] {Long.toString(transactionId),
-									  Long.toString(account.getAccountId())},
+						new String[] { Long.toString(transactionId),
+									   Long.toString(account.getAccountId()) },
 						null,
 						null,
 						null);
@@ -192,7 +192,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 				  + "AND transactions.effectiveTimestamp >= ? "
 				  + "AND transactions.effectiveTimestamp <= ? "
 				  + "GROUP BY transactions.category",
-				  new String[] {user.getUsername(), Long.toString(startTimestamp), Long.toString(endTimestamp)});
+				  new String[] { user.getUsername() , Long.toString(startTimestamp), Long.toString(endTimestamp) });
 		Map<String, BigDecimal> categorySpending = new HashMap<String, BigDecimal>();
 		while (cursor.moveToNext()) {
 			categorySpending.put(cursor.getString(0), new BigDecimal(cursor.getString(1)));

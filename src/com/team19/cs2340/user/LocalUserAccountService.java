@@ -23,7 +23,7 @@ class LocalUserAccountService implements IUserAccountService {
 	@Override
 	public IUser authenticateUser(String username, String password) throws UserAccountException {
 		IUser user = getUser(username);
-		
+		if (user == null) return null;
 		String passwordHash = hashPassword(password);
 		if (user.getPasswordHash().equals(passwordHash)) {
 			return user;
@@ -33,11 +33,11 @@ class LocalUserAccountService implements IUserAccountService {
 	}
 	
 	@Override
-	public boolean userExists(String username) {
+	public boolean userExists(String username){
 		Cursor cursor = db.query("users",
-								 new String[] {"username"},
+								 new String[] { "username" },
 								 "username = ?",
-								 new String[] {username},
+								 new String[] { username },
 								 null,
 								 null,
 								 null);
@@ -46,9 +46,10 @@ class LocalUserAccountService implements IUserAccountService {
 	
 	@Override
 	public IUser createUser(String username, String password) throws UserAccountException {
-		if (userExists(username)) {
-            throw new UserAccountException("Username already exists");
-        }
+		if (userExists(username)) throw new UserAccountException("Username already exists");
+		if (!(username.length() > 0)) throw new UserAccountException("No username specified!");
+		if (!(password.length() > 0)) throw new UserAccountException("No password specified!");
+		
 
 		ContentValues cv = new ContentValues();
 		cv.put("username", username);
@@ -63,9 +64,9 @@ class LocalUserAccountService implements IUserAccountService {
 	
 	private IUser getUser(String username) throws UserAccountException {
 		Cursor cursor = db.query("users",
-								 new String[] {"username", "password", "accountType"},
+								 new String[] { "username", "password", "accountType" },
 								 "username = ?",
-								 new String[] {username},
+								 new String[] { username },
 								 null,
 								 null,
 								 null);
@@ -87,9 +88,7 @@ class LocalUserAccountService implements IUserAccountService {
 			md.update(pwd);
 			byte[] hash = md.digest();
 			StringBuilder sb = new StringBuilder();
-			for (byte b : hash) {
-			    sb.append(String.format("%02x", b));
-			}
+			for (byte b : hash) sb.append(String.format("%02x", b));
 			hashString = sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
