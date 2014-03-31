@@ -86,6 +86,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 	
 	@Override
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
+		if (user == null) throw new FinanceDataException("User must not be null");
 		Cursor cursor =
 			db.query("accounts",
 					 new String[] {
