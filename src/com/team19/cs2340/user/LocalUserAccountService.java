@@ -20,6 +20,9 @@ class LocalUserAccountService implements IUserAccountService {
 		this.db = dbHelper.getWritableDatabase();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.user.IUserAccountService#authenticateUser(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public IUser authenticateUser(String username, String password) throws UserAccountException {
 		IUser user = getUser(username);
@@ -32,6 +35,9 @@ class LocalUserAccountService implements IUserAccountService {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.user.IUserAccountService#userExists(java.lang.String)
+	 */
 	@Override
 	public boolean userExists(String username){
 		Cursor cursor = db.query("users",
@@ -44,6 +50,9 @@ class LocalUserAccountService implements IUserAccountService {
 		return cursor.moveToFirst();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.user.IUserAccountService#createUser(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public IUser createUser(String username, String password) throws UserAccountException {
 		if (userExists(username)) throw new UserAccountException("Username already exists");
@@ -62,6 +71,11 @@ class LocalUserAccountService implements IUserAccountService {
 		}
 	}
 	
+	/**
+	 * @param username
+	 * @return
+	 * @throws UserAccountException
+	 */
 	private IUser getUser(String username) throws UserAccountException {
 		Cursor cursor = db.query("users",
 								 new String[] { "username", "password", "accountType" },
@@ -80,6 +94,10 @@ class LocalUserAccountService implements IUserAccountService {
 		}
 	}
 	
+	/**
+	 * @param password
+	 * @return
+	 */
 	private String hashPassword(String password) {
 		String hashString = null;
 		try {

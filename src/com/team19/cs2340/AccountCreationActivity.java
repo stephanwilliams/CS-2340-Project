@@ -32,8 +32,7 @@ public class AccountCreationActivity extends Activity {
 		getMenuInflater().inflate(R.menu.account_creation, menu);
 		return true;
 	}
-	
-	
+		
 	
 	public void onSubmit(View view) {
 		EditText fullName = (EditText) findViewById(R.id.editText1);

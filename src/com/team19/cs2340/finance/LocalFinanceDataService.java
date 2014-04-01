@@ -27,6 +27,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 		this.db = dbHelper.getWritableDatabase();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#createAccount(com.team19.cs2340.user.IUser, java.lang.String, java.lang.String, java.math.BigDecimal, java.math.BigDecimal)
+	 */
 	@Override
 	public IAccount createAccount(IUser user, String fullName, String displayName,
 			BigDecimal balance, BigDecimal monthlyInterest) throws FinanceDataException {
@@ -46,6 +49,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#createTransaction(com.team19.cs2340.finance.IAccount, long, com.team19.cs2340.finance.ITransaction.TransactionType, java.lang.String, java.math.BigDecimal, java.lang.String)
+	 */
 	@Override
 	public ITransaction createTransaction(IAccount account, long effectiveTimestamp,
 			TransactionType type, String category, BigDecimal amount, String reason)
@@ -53,15 +59,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 		
 		boolean success = true;
 	
-		//Here Lies Michael's Code
-//		if(category.equalsIgnoreCase("")){
-//			textView1.setText("Invalid Category");
-//			throw new FinanceDataException("Invalid Category");
-//		}
-//		if(reason.equalsIgnoreCase("")){
-//			throw new FinanceDataException("Invalid Reason");
-//		}
-//		
+
 		
 		
 		ContentValues cv = new ContentValues();
@@ -84,6 +82,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	
 
 	
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#getAccount(com.team19.cs2340.user.IUser, long)
+	 */
 	@Override
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
 		if (user == null) throw new FinanceDataException("User must not be null");
@@ -115,6 +116,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#getAccounts(com.team19.cs2340.user.IUser)
+	 */
 	@Override
 	public List<IAccount> getAccounts(IUser user) throws FinanceDataException {
 		Cursor cursor =
@@ -133,6 +137,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#getTransactions(com.team19.cs2340.finance.IAccount)
+	 */
 	@Override
 	public List<ITransaction> getTransactions(IAccount account)
 			throws FinanceDataException {
@@ -151,6 +158,14 @@ class LocalFinanceDataService implements IFinanceDataService{
 		return transactions;
 	}
 	
+	/**
+	 * This function finds and returns a transaction object
+	 * 
+	 * @param account
+	 * @param transactionId
+	 * @return
+	 * @throws FinanceDataException
+	 */
 	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException {
 		Cursor cursor =
 				db.query("transactions",
@@ -181,6 +196,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.team19.cs2340.finance.IFinanceDataService#getCategorySpendingReport(com.team19.cs2340.user.IUser, long, long)
+	 */
 	@Override
 	public Map<String, BigDecimal> getCategorySpendingReport(IUser user,
 			long startTimestamp, long endTimestamp) {
