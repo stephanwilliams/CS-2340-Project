@@ -18,6 +18,10 @@ import com.team19.cs2340.finance.ITransaction.TransactionType;
 import com.team19.cs2340.user.UserAccountException;
 import com.team19.cs2340.user.IUser;
 
+/**
+ * An implementation of the IFinanceDataService that uses a local SQLite database for storage
+ *
+ */
 class LocalFinanceDataService implements IFinanceDataService{
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase db;

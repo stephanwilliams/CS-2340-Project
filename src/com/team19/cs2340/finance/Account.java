@@ -3,42 +3,43 @@ package com.team19.cs2340.finance;
 import java.math.BigDecimal;
 
 /**
- * @author ptolemy
- *
+ * This class is an concrete implementation of the IAccount interface
  */
 public class Account implements IAccount {
 	/**
-	 * 
+	 * The UID of the serial version
 	 */
 	private static final long serialVersionUID = 4048567527276603206L;
 	/**
-	 * 
+	 * The id of the account
 	 */
 	private long accountId;
 	/**
-	 * 
+	 * The full name of the user who owns the account
 	 */
 	private String fullName;
 	/**
-	 * 
+	 * The display name of the account
 	 */
 	private String displayName;
 	/**
-	 * 
+	 * The balance of the account
 	 */
 	private BigDecimal balance;
 	/**
-	 * 
+	 * The monthly interest of the account
 	 */
 	private BigDecimal monthlyInterest;
 	
 
 	/**
-	 * @param accountId
-	 * @param fullName
-	 * @param displayName
-	 * @param balance
-	 * @param monthlyInterest
+	 * Creates an account object
+	 * 
+	 * @param accountId			the id of the account		
+	 * @param fullName			the full name of the user who owns the account
+	 * @param displayName		the display name of the account
+	 * @param balance			the balance of the account
+	 * @param monthlyInterest	the monthly interest of the account
 	 */
 	public Account(long accountId, String fullName, String displayName,
 			BigDecimal balance, BigDecimal monthlyInterest) {

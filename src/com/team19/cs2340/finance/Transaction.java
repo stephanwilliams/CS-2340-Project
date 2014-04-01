@@ -2,6 +2,10 @@ package com.team19.cs2340.finance;
 
 import java.math.BigDecimal;
 
+/**
+ * This class is an concrete implementation of the Transaction interface
+ *
+ */
 class Transaction implements ITransaction {
 	private static final long serialVersionUID = 6256312418840575109L;
 	private long addedTimestamp;
@@ -11,6 +15,16 @@ class Transaction implements ITransaction {
 	private TransactionType type;
 	private String reason;
 	
+	/**
+	 * Creates a transaction object
+	 * 
+	 * @param addedTimestamp					the timestamp in which the transaction was added
+	 * @param effectiveTimestamp				the timestamp in which the transaction was put into effect 
+	 * @param type								the type of the transaction
+	 * @param amount							the monetary amount of the transaction
+	 * @param category							the category of the transaction
+	 * @param reason							the reason behind the transaction
+	 */
 	public Transaction(long addedTimestamp, long effectiveTimestamp,
 			TransactionType type, BigDecimal amount, String category, String reason) {
 		this.addedTimestamp = addedTimestamp;
