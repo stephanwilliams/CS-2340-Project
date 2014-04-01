@@ -3,20 +3,41 @@ package com.team19.cs2340.finance;
 import java.math.BigDecimal;
 
 /**
- * This class is an concrete implementation of the Transaction interface
+ * This class is an concrete implementation of the Transaction interface.
  *
  */
 class Transaction implements ITransaction {
+	/**
+	 * the UID of the serial version.
+	 */
 	private static final long serialVersionUID = 6256312418840575109L;
+	/**
+	 * the timestamp in which the transaction was added.
+	 */
 	private long addedTimestamp;
+	/**
+	 * the timestamp in which the transaction was put into effect. 
+	 */
 	private long effectiveTimestamp;
+	/**
+	 * the category of the transaction.
+	 */
 	private String category;
+	/**
+	 * the monetary amount of the transaction.
+	 */
 	private BigDecimal amount;
+	/**
+	 * the type of the transaction.
+	 */
 	private TransactionType type;
+	/**
+	 * the reason behind the transaction.
+	 */
 	private String reason;
 	
 	/**
-	 * Creates a transaction object
+	 * Creates a transaction object.
 	 * 
 	 * @param addedTimestamp					the timestamp in which the transaction was added
 	 * @param effectiveTimestamp				the timestamp in which the transaction was put into effect 
@@ -79,13 +100,14 @@ class Transaction implements ITransaction {
 	/* (non-Javadoc)
 	 * @see com.team19.cs2340.finance.ITransaction#getReason()
 	 */
-	public String getReason(){
+	@Override
+	public String getReason() {
 		return reason;
 	}
 	/**
 	 * @param reason							the reason behind the transaction
 	 */
-	public void setReason(String reason){
+	public void setReason(String reason) {
 		this.reason = reason;
 	}
 	

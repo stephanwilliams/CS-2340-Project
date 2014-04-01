@@ -8,7 +8,7 @@ import com.team19.cs2340.finance.ITransaction.TransactionType;
 import com.team19.cs2340.user.IUser;
 
 /**
- *	Interface for implementations of FinanceDataService
+ *	Interface for implementations of FinanceDataService.
  *
  */
 public interface IFinanceDataService {

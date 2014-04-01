@@ -4,13 +4,23 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * The interface class for transaction handling
+ * The interface class for transaction handling.
  *
  */
 public interface ITransaction extends Serializable {
 	
+	/**
+	 * Possible types of transactions.
+	 *
+	 */
 	public static enum TransactionType {
+		/**
+		 * Denotes a deposit.
+		 */
 		DEPOSIT,
+		/**
+		 * Denotes a withdrawal.
+		 */
 		WITHDRAWAL
 	}
 	

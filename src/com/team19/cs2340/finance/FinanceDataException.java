@@ -1,12 +1,12 @@
 package com.team19.cs2340.finance;
 
 /**
- *	Exception class for finance data service 
+ *	Exception class for finance data service. 
  */
 public class FinanceDataException extends Exception {
 
 	/**
-	 * The UID of the serial version
+	 * The UID of the serial version.
 	 */
 	private static final long serialVersionUID = -3189836613166128874L;
 	

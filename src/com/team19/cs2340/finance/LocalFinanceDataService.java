@@ -19,13 +19,25 @@ import com.team19.cs2340.user.UserAccountException;
 import com.team19.cs2340.user.IUser;
 
 /**
- * An implementation of the IFinanceDataService that uses a local SQLite database for storage
+ * An implementation of the IFinanceDataService that uses a local SQLite database for storage.
  *
  */
-class LocalFinanceDataService implements IFinanceDataService{
+class LocalFinanceDataService implements IFinanceDataService {
+	
+	/**
+	 * Instatiation of the database class.
+	 */
 	private DatabaseHelper dbHelper;
+	/**
+	 * Instatiation of the SQLiteDatabase class.
+	 */
 	private SQLiteDatabase db;
 	
+	/**
+	 * Creates a LocalFinanceDataService object.
+	 * 
+	 * @param context		A context
+	 */
 	public LocalFinanceDataService(Context context) {
 		this.dbHelper = new DatabaseHelper(context);
 		this.db = dbHelper.getWritableDatabase();
@@ -86,23 +98,23 @@ class LocalFinanceDataService implements IFinanceDataService{
 	 */
 	@Override
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException {
-		if (user == null) throw new FinanceDataException("User must not be null");
+		if (user == null) {
+			throw new FinanceDataException("User must not be null");
+		}
 		Cursor cursor =
 			db.query("accounts",
 					 new String[] {
 						"_id", "username", "fullName", "displayName",
-						"balance", "monthlyInterest" },
+						"balance", "monthlyInterest"},
 					 "_id = ?",
-					 new String[] { Long.toString(accountId) },
+					 new String[] {Long.toString(accountId)},
 					 null,
 					 null,
 					 null);
 		if (!cursor.moveToFirst()) {
 			throw new FinanceDataException("Account does not exist");
 		} else {
-			if (!cursor.getString(1).equals(user.getUsername())) {
-				throw new FinanceDataException("Account belongs to different user");
-			} else {
+			if (cursor.getString(1).equals(user.getUsername())) {
 				IAccount account = new Account(
 						cursor.getLong(0),
 						cursor.getString(2),
@@ -110,6 +122,10 @@ class LocalFinanceDataService implements IFinanceDataService{
 						new BigDecimal(cursor.getString(4)),
 						new BigDecimal(cursor.getString(5)));
 				return account;
+			} else {
+				
+				throw new FinanceDataException("Account belongs to different user");
+				
 			}
 		}
 		
@@ -122,9 +138,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	public List<IAccount> getAccounts(IUser user) throws FinanceDataException {
 		Cursor cursor =
 				db.query("accounts",
-						 new String[] { "_id" },
+						 new String[] {"_id"},
 						 "username = ?",
-						 new String[] { user.getUsername() },
+						 new String[] {user.getUsername()},
 						 null,
 						 null,
 						 null);
@@ -147,45 +163,43 @@ class LocalFinanceDataService implements IFinanceDataService{
 		}
 		Cursor cursor = 
 				db.query("transactions",
-						new String[] { "_id" },
+						new String[] {"_id"},
 						"account = ?",
-						new String[] { Long.toString(account.getAccountId()) },
+						new String[] {Long.toString(account.getAccountId())},
 						null,
 						null,
 						null);
 		List<ITransaction> transactions = new ArrayList<ITransaction>();
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 			transactions.add(getTransaction(account, cursor.getLong(0)));
 		}
 		return transactions;
 	}
 	
 	/**
-	 * This function finds and returns a transaction object
+	 * This function finds and returns a transaction object.
 	 * 
 	 * @param account								the account which the transaction belongs to
 	 * @param transactionId							the ID of the transaction
 	 * @return 										the requested ITransaction object
 	 * @throws FinanceDataException
 	 */
-	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException {
+	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException{
 		Cursor cursor =
 				db.query("transactions",
 						new String[] {
 							"_id", "account", "addedTimestamp", "effectiveTimestamp",
 							"type", "amount", "category", "reason" },
 						"_id = ? AND account = ?",
-						new String[] { Long.toString(transactionId),
-									   Long.toString(account.getAccountId()) },
+						new String[] {Long.toString(transactionId),
+									  Long.toString(account.getAccountId()) },
 						null,
 						null,
 						null);
 		if (!cursor.moveToFirst()) {
 			throw new FinanceDataException("Transaction does not exist");
 		} else {
-			if (!(cursor.getLong(1) == account.getAccountId())) {
-				throw new FinanceDataException("Transaction does not belong to account");
-			} else {
+			if ((cursor.getLong(1) == account.getAccountId())) {
 				ITransaction transaction = new Transaction(
 						cursor.getLong(2),
 						cursor.getLong(3),
@@ -194,6 +208,10 @@ class LocalFinanceDataService implements IFinanceDataService{
 						cursor.getString(6),
 						cursor.getString(7));
 				return transaction;
+			} else {
+				
+				throw new FinanceDataException("Transaction does not belong to account");
+				
 			}
 		}
 	}
@@ -212,7 +230,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 				  + "AND transactions.effectiveTimestamp >= ? "
 				  + "AND transactions.effectiveTimestamp <= ? "
 				  + "GROUP BY transactions.category",
-				  new String[] { user.getUsername() , Long.toString(startTimestamp), Long.toString(endTimestamp) });
+				  new String[] {user.getUsername() , Long.toString(startTimestamp), Long.toString(endTimestamp)});
 		Map<String, BigDecimal> categorySpending = new HashMap<String, BigDecimal>();
 		while (cursor.moveToNext()) {
 			categorySpending.put(cursor.getString(0), new BigDecimal(cursor.getString(1)));

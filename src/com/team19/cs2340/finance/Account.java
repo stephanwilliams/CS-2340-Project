@@ -3,37 +3,37 @@ package com.team19.cs2340.finance;
 import java.math.BigDecimal;
 
 /**
- * This class is an concrete implementation of the IAccount interface
+ * This class is an concrete implementation of the IAccount interface.
  */
 public class Account implements IAccount {
 	/**
-	 * The UID of the serial version
+	 * The UID of the serial version.
 	 */
 	private static final long serialVersionUID = 4048567527276603206L;
 	/**
-	 * The id of the account
+	 * The id of the account.
 	 */
 	private long accountId;
 	/**
-	 * The full name of the user who owns the account
+	 * The full name of the user who owns the account.
 	 */
 	private String fullName;
 	/**
-	 * The display name of the account
+	 * The display name of the account.
 	 */
 	private String displayName;
 	/**
-	 * The balance of the account
+	 * The balance of the account.
 	 */
 	private BigDecimal balance;
 	/**
-	 * The monthly interest of the account
+	 * The monthly interest of the account.
 	 */
 	private BigDecimal monthlyInterest;
 	
 
 	/**
-	 * Creates an account object
+	 * Creates an account object.
 	 * 
 	 * @param accountId			the id of the account		
 	 * @param fullName			the full name of the user who owns the account
@@ -91,6 +91,8 @@ public class Account implements IAccount {
 	}
 
 	/**
+	 * Set the account ID.
+	 * 
 	 * @param accountId			the ID to be set for the account
 	 */
 	public void setAccountId(long accountId) {
@@ -98,6 +100,8 @@ public class Account implements IAccount {
 	}
 
 	/**
+	 * Set the full name.
+	 * 
 	 * @param fullName			the fullname of the user to be set for the account
 	 */
 	public void setFullName(String fullName) {
@@ -105,6 +109,8 @@ public class Account implements IAccount {
 	}
 
 	/**
+	 * Set the display name.
+	 * 
 	 * @param displayName		the display name to be set for the account 
 	 */
 	public void setDisplayName(String displayName) {
@@ -112,6 +118,8 @@ public class Account implements IAccount {
 	}
 
 	/**
+	 * Set the balance.
+	 * 
 	 * @param balance			the balance to be set for the account
 	 */
 	public void setBalance(BigDecimal balance) {
@@ -119,6 +127,8 @@ public class Account implements IAccount {
 	}
 
 	/**
+	 * Set the monthly interest
+	 * 
 	 * @param monthlyInterest	the monthly interest to be est for the account
 	 */
 	public void setMonthlyInterest(BigDecimal monthlyInterest) {

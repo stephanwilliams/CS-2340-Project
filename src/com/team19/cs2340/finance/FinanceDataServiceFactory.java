@@ -3,7 +3,7 @@ package com.team19.cs2340.finance;
 import android.content.Context;
 
 /**
- * Factory for creating FinanceDataService objects
+ * Factory for creating FinanceDataService objects.
  *
  */
 public class FinanceDataServiceFactory {
