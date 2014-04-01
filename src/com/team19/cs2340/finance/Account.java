@@ -2,15 +2,44 @@ package com.team19.cs2340.finance;
 
 import java.math.BigDecimal;
 
+/**
+ * @author ptolemy
+ *
+ */
 public class Account implements IAccount {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 4048567527276603206L;
+	/**
+	 * 
+	 */
 	private long accountId;
+	/**
+	 * 
+	 */
 	private String fullName;
+	/**
+	 * 
+	 */
 	private String displayName;
+	/**
+	 * 
+	 */
 	private BigDecimal balance;
+	/**
+	 * 
+	 */
 	private BigDecimal monthlyInterest;
 	
 
+	/**
+	 * @param accountId
+	 * @param fullName
+	 * @param displayName
+	 * @param balance
+	 * @param monthlyInterest
+	 */
 	public Account(long accountId, String fullName, String displayName,
 			BigDecimal balance, BigDecimal monthlyInterest) {
 		this.accountId = accountId;
