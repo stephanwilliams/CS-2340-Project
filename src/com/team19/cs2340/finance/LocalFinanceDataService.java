@@ -57,11 +57,6 @@ class LocalFinanceDataService implements IFinanceDataService{
 			TransactionType type, String category, BigDecimal amount, String reason)
 			throws FinanceDataException {
 		
-		boolean success = true;
-	
-
-		
-		
 		ContentValues cv = new ContentValues();
 		cv.put("account", account.getAccountId());
 		cv.put("addedTimestamp", System.currentTimeMillis());
