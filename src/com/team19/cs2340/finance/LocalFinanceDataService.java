@@ -156,9 +156,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	/**
 	 * This function finds and returns a transaction object
 	 * 
-	 * @param account
-	 * @param transactionId
-	 * @return requested ITransaction object
+	 * @param account								the account which the transaction belongs to
+	 * @param transactionId							the ID of the transaction
+	 * @return 										the requested ITransaction object
 	 * @throws FinanceDataException
 	 */
 	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException {

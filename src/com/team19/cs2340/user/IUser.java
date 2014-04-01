@@ -9,8 +9,17 @@ public interface IUser extends Serializable {
 		ADMIN
 	}
 	
+	/**
+	 * @return		the username of the user requested
+	 */
 	public String getUsername();
+	/**
+	 * @return		the password hash (String)
+	 */
 	public String getPasswordHash();
+	/**
+	 * @return		the AccountType of the IUser
+	 */
 	public IUser.AccountType getAccountType();
 
 }

@@ -74,8 +74,8 @@ class LocalUserAccountService implements IUserAccountService {
 	/**
 	 * This function finds and returns a User object
 	 * 
-	 * @param username
-	 * @return requested IUser object
+	 * @param username						the username of the requested user
+	 * @return 								the requested IUser object
 	 * @throws UserAccountException
 	 */
 	private IUser getUser(String username) throws UserAccountException {
@@ -99,8 +99,8 @@ class LocalUserAccountService implements IUserAccountService {
 	/**
 	 * This function hashes and returns a password
 	 * 
-	 * @param password
-	 * @return hashed password (String)
+	 * @param password						the password to be hashed
+	 * @return 								hashed password (String object)
 	 */
 	private String hashPassword(String password) {
 		String hashString = null;
