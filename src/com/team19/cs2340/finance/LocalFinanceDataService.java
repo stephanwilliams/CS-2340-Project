@@ -138,6 +138,9 @@ class LocalFinanceDataService implements IFinanceDataService{
 	@Override
 	public List<ITransaction> getTransactions(IAccount account)
 			throws FinanceDataException {
+		if (account == null) {
+			throw FinanceDataException("Account is null");
+		}
 		Cursor cursor = 
 				db.query("transactions",
 						new String[] { "_id" },
