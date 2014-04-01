@@ -6,7 +6,7 @@ public interface IUserAccountService {
 	 * 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return authenticated user
 	 * @throws UserAccountException
 	 */
 	public IUser authenticateUser(String username, String password) throws UserAccountException;
@@ -14,7 +14,7 @@ public interface IUserAccountService {
 	 * This function checks whether an user exists.
 	 * 
 	 * @param username
-	 * @return
+	 * @return true if user exists, else false. 
 	 */
 	public boolean userExists(String username);
 	/**
@@ -22,7 +22,7 @@ public interface IUserAccountService {
 	 * 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return created IUser object
 	 * @throws UserAccountException
 	 */
 	public IUser createUser(String username, String password) throws UserAccountException;

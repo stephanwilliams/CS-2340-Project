@@ -163,7 +163,7 @@ class LocalFinanceDataService implements IFinanceDataService{
 	 * 
 	 * @param account
 	 * @param transactionId
-	 * @return
+	 * @return requested ITransaction object
 	 * @throws FinanceDataException
 	 */
 	private ITransaction getTransaction(IAccount account, long transactionId) throws FinanceDataException {

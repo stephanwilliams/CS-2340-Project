@@ -16,7 +16,7 @@ public interface IFinanceDataService {
 	 * @param displayName
 	 * @param balance
 	 * @param monthlyInterest
-	 * @return
+	 * @return created IAccount object
 	 * @throws FinanceDataException
 	 */
 	public IAccount createAccount(IUser user, String fullName, String displayName,
@@ -30,7 +30,7 @@ public interface IFinanceDataService {
 	 * @param category
 	 * @param amount
 	 * @param reason
-	 * @return
+	 * @return created ITransaction
 	 * @throws FinanceDataException
 	 */
 	public ITransaction createTransaction(IAccount account, long addedDate, TransactionType type,
@@ -41,7 +41,7 @@ public interface IFinanceDataService {
 	 * 
 	 * @param user
 	 * @param accountId
-	 * @return
+	 * @return requested IAccount object
 	 * @throws FinanceDataException
 	 */
 	public IAccount getAccount(IUser user, long accountId) throws FinanceDataException;
@@ -57,7 +57,7 @@ public interface IFinanceDataService {
 	 * This function finds transaction, populates a list with the transactions, and returns the list.
 	 * 
 	 * @param account
-	 * @return
+	 * @return List populated with requested ITransaction objects
 	 * @throws FinanceDataException
 	 */
 	public List<ITransaction> getTransactions(IAccount account) throws FinanceDataException;
@@ -67,7 +67,7 @@ public interface IFinanceDataService {
 	 * @param user
 	 * @param startTimestamp
 	 * @param endTimestamp
-	 * @return
+	 * @return Map populated with requested transactions (String array)
 	 */
 	public Map<String, BigDecimal> getCategorySpendingReport(IUser user, long startTimestamp, long endTimestamp);
 	
