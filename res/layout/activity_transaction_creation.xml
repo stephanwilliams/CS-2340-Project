@@ -9,7 +9,7 @@
     tools:context=".TransactionCreationActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,7 +21,7 @@
         android:textSize="20sp" />
     
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/transaction_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -32,40 +32,40 @@
          />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/reason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner1"
-        android:layout_alignRight="@+id/spinner1"
-        android:layout_below="@id/spinner1"
+        android:layout_alignLeft="@+id/transaction_type"
+        android:layout_alignRight="@+id/transaction_type"
+        android:layout_below="@id/transaction_type"
         android:ems="10"
         android:hint="Reason"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_below="@+id/editText2"
+        android:layout_alignLeft="@+id/reason"
+        android:layout_alignRight="@+id/reason"
+        android:layout_below="@+id/reason"
         android:ems="10"
         android:hint="Category"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText3"
-        android:layout_alignRight="@+id/editText3"
-        android:layout_below="@+id/editText3"
+        android:layout_alignLeft="@+id/category"
+        android:layout_alignRight="@+id/category"
+        android:layout_below="@+id/category"
         android:ems="10"
         android:hint="Transaction Amount"
         android:inputType="numberDecimal" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -76,21 +76,21 @@
         android:text="@string/cancel" />
 
     <com.team19.cs2340.DialogDatePicker
-        android:id="@+id/editText5"
+        android:id="@+id/transaction_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText4"
-        android:layout_alignRight="@+id/editText4"
-        android:layout_below="@+id/editText4"
+        android:layout_alignLeft="@+id/amount"
+        android:layout_alignRight="@+id/amount"
+        android:layout_below="@+id/amount"
         android:ems="10"
         android:hint="Date"
         android:inputType="date" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/cancel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="14dp"

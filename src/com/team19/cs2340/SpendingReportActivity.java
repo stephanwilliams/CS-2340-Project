@@ -28,144 +28,181 @@ import com.team19.cs2340.finance.FinanceDataServiceFactory;
 import com.team19.cs2340.finance.IFinanceDataService;
 import com.team19.cs2340.user.IUser;
 
+/**
+ *  Activity that allows users to view reports regarding their accounts.
+ */
 public class SpendingReportActivity extends Activity {
-	private IFinanceDataService fds; 
-	private IUser user;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_spending_report);
-		// Show the Up button in the action bar.
-		fds = FinanceDataServiceFactory.createFinanceDataService(this);
-		
-		Intent intent = getIntent();
-		user = (IUser) intent.getSerializableExtra("user");
-		
-		Spinner spinner = (Spinner) findViewById(R.id.spendingType);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.report_types, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-		spinner.setAdapter(adapter);
-		
-		
-		DialogDatePicker date1 = (DialogDatePicker) findViewById(R.id.datePicker1);
-		DialogDatePicker date2 = (DialogDatePicker) findViewById(R.id.datePicker2);
+    /**
+     * The FinanceDataService used to retrieve finance data.
+     */
+    private IFinanceDataService fds;
+    /**
+     * The user whose data is being displayed.
+     */
+    private IUser user;
 
-		date1.addTextChangedListener(new TextWatcher() {
-	       @Override
-			public void afterTextChanged(Editable s) {
-	            remakeEverything();
-	        }
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-	        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-	    }); 
-		date2.addTextChangedListener(new TextWatcher(){
-	       @Override
-			public void afterTextChanged(Editable s) {
-	            remakeEverything();
-	        }
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-	        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-	    }); 
-		
-		remakeEverything();
-		
-		setupActionBar();
-	}
-	
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_spending_report);
+        // Show the Up button in the action bar.
+        fds = FinanceDataServiceFactory.createFinanceDataService(this);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent intent = getIntent();
+        user = (IUser) intent.getSerializableExtra("user");
 
-	}
+        Spinner spinner = (Spinner) findViewById(R.id.spendingType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.report_types,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
 
-	/*
-	 * Code to steal
-	 * 
-	 * Spinner spinner = (Spinner)findViewById(R.id.spinner1);
-	 *	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.transaction_types, android.R.layout.simple_spinner_item);
-	 *	adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	 *	spinner.setAdapter(adapter);
-	 * 
-	 * Spinner type = (Spinner)findViewById(R.id.spinner1);
-	 */
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			Intent intent = getIntent();
-			Intent goUp = new Intent(this, HomeScreenActivity.class);
-    		goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
-			NavUtils.navigateUpTo(this, goUp);
-			return true;
-		 default: 
-	        return super.onOptionsItemSelected(item);
-		}
-	}
-	private static class EntryListAdapter extends ArrayAdapter<Entry<String, BigDecimal>> {
+        final DialogDatePicker startDate = (DialogDatePicker) findViewById(R.id.start_date);
+        final DialogDatePicker endDate = (DialogDatePicker) findViewById(R.id.end_date);
 
-		public EntryListAdapter(Context context, int resource,
-				List<Entry<String, BigDecimal>> objects) {
-			super(context, resource, objects);
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			Entry<String, BigDecimal> entry = getItem(position);
-			
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.spending_report_list_item, parent, false);
-			
-			TextView category = (TextView) rowView.findViewById(R.id.spending_report_display_name);
-			category.setText(entry.getKey());
-			
-			TextView amount = (TextView) rowView.findViewById(R.id.spending_report_balance);
-			
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			amount.setText(format.format(entry.getValue().doubleValue()));
-			
-			return rowView;
-		}
-	}
-	
-	public void remakeEverything() {
-		
-		try {
-			DialogDatePicker date1 = (DialogDatePicker) findViewById(R.id.datePicker1);
-			Calendar cal1 = date1.getCalendar();
-			
-			DialogDatePicker date2 = (DialogDatePicker) findViewById(R.id.datePicker2);
-			Calendar cal2 = date2.getCalendar();
-			
-			Map<String, BigDecimal> reportMap = fds.getCategorySpendingReport(user, 
-												cal1.getTimeInMillis(),
-												cal2.getTimeInMillis());
-			//System.out.println(reportMap.keySet().size());
-			//if (reportMap.keySet().size() < 1) {
-			//	int x = 1;
-			//	while (x<=1) {
-			//		x =0;
-			//	}
-			//}
-			List<Entry<String, BigDecimal>> reportMapArrays = new ArrayList<Map.Entry<String, BigDecimal>>(reportMap.entrySet());
-			
-			ArrayAdapter<Entry<String, BigDecimal>> adapter = new EntryListAdapter(this, R.layout.activity_spending_report, reportMapArrays);
-			
-			ListView listView = (ListView) findViewById(R.id.reportListView);
-			listView.setAdapter(adapter);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-	}
+        startDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (startDate.getCalendar().compareTo(endDate.getCalendar()) > 0) {
+                    endDate.setCalendar((Calendar) startDate.getCalendar().clone());
+                }
+                refreshSpendingReport();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+            }
+        });
+        endDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (endDate.getCalendar().compareTo(startDate.getCalendar()) < 0) {
+                    startDate.setCalendar((Calendar) endDate.getCalendar().clone());
+                }
+                refreshSpendingReport();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+            }
+        });
+
+        refreshSpendingReport();
+
+        setupActionBar();
+    }
+
+    /**
+     * Set up the {@link android.app.ActionBar}.
+     */
+    private void setupActionBar() {
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. Use NavUtils to allow users
+                // to navigate up one level in the application structure. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+                //
+                Intent intent = getIntent();
+                Intent goUp = new Intent(this, HomeScreenActivity.class);
+                goUp.putExtra("user", (IUser) intent.getSerializableExtra("user"));
+                NavUtils.navigateUpTo(this, goUp);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     *  ArrayAdapter for displaying the rows of the report.
+     */
+    private static class EntryListAdapter extends
+            ArrayAdapter<Entry<String, BigDecimal>> {
+
+        /**
+         * Instantiates a new EntryListAdapter.
+         * 
+         * @param context a context
+         * @param resource the resource ID of the row layout file
+         * @param objects objects representing the rows of the table
+         */
+        public EntryListAdapter(Context context, int resource,
+                List<Entry<String, BigDecimal>> objects) {
+            super(context, resource, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Entry<String, BigDecimal> entry = getItem(position);
+
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.spending_report_list_item,
+                    parent, false);
+
+            TextView category = (TextView) rowView
+                    .findViewById(R.id.spending_report_display_name);
+            category.setText(entry.getKey());
+
+            TextView amount = (TextView) rowView
+                    .findViewById(R.id.spending_report_balance);
+
+            NumberFormat format = NumberFormat.getCurrencyInstance();
+            amount.setText(format.format(entry.getValue().doubleValue()));
+
+            return rowView;
+        }
+    }
+
+    /**
+     * Refreshes the data in the list view.
+     */
+    public void refreshSpendingReport() {
+
+        try {
+            DialogDatePicker startDate = (DialogDatePicker) findViewById(R.id.start_date);
+            Calendar startCal = startDate.getCalendar();
+
+            DialogDatePicker endDate = (DialogDatePicker) findViewById(R.id.end_date);
+            Calendar endCal = endDate.getCalendar();
+
+            Map<String, BigDecimal> reportMap = fds.getCategorySpendingReport(
+                    user, startCal.getTimeInMillis(), endCal.getTimeInMillis());
+            // System.out.println(reportMap.keySet().size());
+            // if (reportMap.keySet().size() < 1) {
+            // int x = 1;
+            // while (x<=1) {
+            // x =0;
+            // }
+            // }
+            List<Entry<String, BigDecimal>> reportMapArrays = new ArrayList<Map.Entry<String, BigDecimal>>(
+                    reportMap.entrySet());
+
+            ArrayAdapter<Entry<String, BigDecimal>> adapter = new EntryListAdapter(
+                    this, R.layout.activity_spending_report, reportMapArrays);
+
+            ListView listView = (ListView) findViewById(R.id.reportListView);
+            listView.setAdapter(adapter);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 }

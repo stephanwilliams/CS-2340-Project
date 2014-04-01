@@ -8,14 +8,14 @@
     <string name="username">Username</string>
     <string name="title_activity_home_screen">Home Screen</string>
     <string name="title_activity_registration">Register</string>
-    <string name="title_activity_account_creation">AccountCreationActivity</string>
+    <string name="title_activity_account_creation">Account Creation</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_add_account">Add Account</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_transaction_list">TransactionListActivity</string>
+    <string name="title_activity_transaction_list">Transaction List</string>
     <string name="action_add_transaction">Add Transaction</string>
     <string name="action_view_reports">View Reports</string>
-    <string name="title_activity_transaction_creation">TransactionCreationActivity</string>
+    <string name="title_activity_transaction_creation">Transaction Creation</string>
 	<string name="title_activity_spending_report">Spending Report</string>
 </resources>
