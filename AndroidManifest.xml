@@ -80,6 +80,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.team19.cs2340.HomeScreenActivity" />
         </activity>
+        <activity
+            android:name="com.team19.cs2340.AdminScreenActivity"
+            android:label="@string/title_activity_admin_screen"
+            android:parentActivityName="com.team19.cs2340.WelcomeScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.team19.cs2340.WelcomeScreen" />
+        </activity>
+        <activity
+            android:name="com.team19.cs2340.PasswordChangeActivity"
+            android:label="@string/title_activity_password_change"
+            android:parentActivityName="com.team19.cs2340.AdminScreenActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.team19.cs2340.AdminScreenActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.team19.cs2340.user;
 
+import java.util.List;
+
 /**
  * Interface defining a service for retrieving and working with user data.
  *
@@ -39,4 +41,7 @@ public interface IUserAccountService {
      */
     IUser createUser(String username, String password)
         throws UserAccountException;
+    
+    List<IUser> getUsers(IUser admin) throws UserAccountException;
+    IUser changePassword(IUser admin, IUser user, String newPassword) throws UserAccountException;
 }

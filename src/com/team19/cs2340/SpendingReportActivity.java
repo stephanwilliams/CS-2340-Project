@@ -2,6 +2,7 @@ package com.team19.cs2340;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -51,12 +54,22 @@ public class SpendingReportActivity extends Activity {
         Intent intent = getIntent();
         user = (IUser) intent.getSerializableExtra("user");
 
-        Spinner spinner = (Spinner) findViewById(R.id.spendingType);
+        Spinner reportType = (Spinner) findViewById(R.id.spendingType);
+        reportType.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                    int arg2, long arg3) {
+                refreshSpendingReport();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.report_types,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(adapter);
+        reportType.setAdapter(adapter);
 
         final DialogDatePicker startDate = (DialogDatePicker) findViewById(R.id.start_date);
         final DialogDatePicker endDate = (DialogDatePicker) findViewById(R.id.end_date);
@@ -183,21 +196,36 @@ public class SpendingReportActivity extends Activity {
 
             DialogDatePicker endDate = (DialogDatePicker) findViewById(R.id.end_date);
             Calendar endCal = endDate.getCalendar();
-
-            Map<String, BigDecimal> reportMap = fds.getCategorySpendingReport(
+            
+            Spinner reportType = (Spinner) findViewById(R.id.spendingType);
+            
+            List<Entry<String, BigDecimal>> reportMapArray = new ArrayList<Map.Entry<String, BigDecimal>>();
+            
+            switch(reportType.getSelectedItemPosition()) {
+            case 0: // Category Spending Report
+                Map<String, BigDecimal> categorySpending = fds.getCategorySpendingReport(
                     user, startCal.getTimeInMillis(), endCal.getTimeInMillis());
-            // System.out.println(reportMap.keySet().size());
-            // if (reportMap.keySet().size() < 1) {
-            // int x = 1;
-            // while (x<=1) {
-            // x =0;
-            // }
-            // }
-            List<Entry<String, BigDecimal>> reportMapArrays = new ArrayList<Map.Entry<String, BigDecimal>>(
-                    reportMap.entrySet());
+                reportMapArray.addAll(categorySpending.entrySet());
+                break;
+            case 1: // Income Source Report
+                Map<String, BigDecimal> incomeSource = fds.getIncomeSourceReport(user, startCal.getTimeInMillis(), endCal.getTimeInMillis());
+                reportMapArray.addAll(incomeSource.entrySet());
+                BigDecimal total = BigDecimal.ZERO;
+                for (Map.Entry<String, BigDecimal> entry : incomeSource.entrySet()) {
+                    total = total.add(entry.getValue());
+                }
+                reportMapArray.add(new AbstractMap.SimpleEntry<String, BigDecimal>("Total", total));
+                break;
+            case 2: // Cash Flow Report
+                Map<String, BigDecimal> cashFlow = fds.getCashFlowReport(user, startCal.getTimeInMillis(), endCal.getTimeInMillis());
+                reportMapArray.add(new AbstractMap.SimpleEntry<String, BigDecimal>("Income", cashFlow.get("Income")));
+                reportMapArray.add(new AbstractMap.SimpleEntry<String, BigDecimal>("Expenses", cashFlow.get("Expenses")));
+                reportMapArray.add(new AbstractMap.SimpleEntry<String, BigDecimal>("Total", cashFlow.get("Expenses").add(cashFlow.get("Income"))));
+                break;
+            }
 
             ArrayAdapter<Entry<String, BigDecimal>> adapter = new EntryListAdapter(
-                    this, R.layout.activity_spending_report, reportMapArrays);
+                    this, R.layout.activity_spending_report, reportMapArray);
 
             ListView listView = (ListView) findViewById(R.id.reportListView);
             listView.setAdapter(adapter);

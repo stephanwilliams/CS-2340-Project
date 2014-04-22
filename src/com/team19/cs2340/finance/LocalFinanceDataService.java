@@ -250,4 +250,61 @@ class LocalFinanceDataService implements IFinanceDataService {
         }
         return categorySpending;
     }
+
+    @Override
+    public Map<String, BigDecimal> getIncomeSourceReport(IUser user,
+            long startTimestamp, long endTimestamp) {
+        Cursor cursor = db
+                .rawQuery(
+                        "SELECT transactions.category, sum(transactions.amount) "
+                                + "FROM transactions "
+                                + "JOIN accounts ON transactions.account = accounts._id "
+                                + "WHERE accounts.username = ? "
+                                + "AND transactions.effectiveTimestamp >= ? "
+                                + "AND transactions.effectiveTimestamp <= ? "
+                                + "AND transactions.type = ? "
+                                + "GROUP BY transactions.category",
+                        new String[] {user.getUsername(),
+                                Long.toString(startTimestamp),
+                                Long.toString(endTimestamp),
+                                Integer.toString(ITransaction.TransactionType.DEPOSIT.ordinal())
+                                });
+        Map<String, BigDecimal> incomeSource = new HashMap<String, BigDecimal>();
+        while (cursor.moveToNext()) {
+            incomeSource.put(cursor.getString(0), new BigDecimal(cursor.getString(1)));
+        }
+        return incomeSource;
+    }
+
+    @Override
+    public Map<String, BigDecimal> getCashFlowReport(IUser user,
+            long startTimestamp, long endTimestamp) {
+        Cursor cursor = db
+                .rawQuery(
+                        "SELECT transactions.type, sum(transactions.amount) "
+                                + "FROM transactions "
+                                + "JOIN accounts ON transactions.account = accounts._id "
+                                + "WHERE accounts.username = ? "
+                                + "AND transactions.effectiveTimestamp >= ? "
+                                + "AND transactions.effectiveTimestamp <= ? "
+                                + "GROUP BY transactions.type",
+                        new String[] {user.getUsername(),
+                                Long.toString(startTimestamp),
+                                Long.toString(endTimestamp)
+                                });
+        Map<String, BigDecimal> cashFlow = new HashMap<String, BigDecimal>();
+        cashFlow.put("Income", BigDecimal.ZERO);
+        cashFlow.put("Expenses", BigDecimal.ZERO);
+        while (cursor.moveToNext()) {
+            switch (ITransaction.TransactionType.values()[cursor.getInt(0)]) {
+            case DEPOSIT:
+                cashFlow.put("Income", new BigDecimal(cursor.getString(1)));
+                break;
+            case WITHDRAWAL:
+                cashFlow.put("Expenses", new BigDecimal(cursor.getString(1)));
+                break;
+            }
+        }
+        return cashFlow;
+    }
 }

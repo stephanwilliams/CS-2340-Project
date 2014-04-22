@@ -3,6 +3,8 @@ package com.team19.cs2340.user;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -148,5 +150,37 @@ class LocalUserAccountService implements IUserAccountService {
             e.printStackTrace();
         }
         return hashString;
+    }
+
+    @Override
+    public List<IUser> getUsers(IUser admin) throws UserAccountException {
+        if (admin.getAccountType() != IUser.AccountType.ADMIN)
+            throw new UserAccountException("Insufficent privilege to list users");
+        Cursor cursor = db.query("users",
+                                 new String[] {"username"},
+                                 null, null, null, null, null);
+        List<IUser> users = new ArrayList<IUser>();
+        while (cursor.moveToNext()) {
+            users.add(getUser(cursor.getString(0)));
+        }
+        return users;
+    }
+
+    @Override
+    public IUser changePassword(IUser admin, IUser user, String newPassword) throws UserAccountException {
+        if (admin.getAccountType() != IUser.AccountType.ADMIN) {
+            throw new UserAccountException("Insufficient privilege to change user password");
+        }
+        if (!(newPassword.length() > 0)) {
+            throw new UserAccountException("No password specified");
+        }
+
+        String passwordHash = hashPassword(newPassword);
+
+        ContentValues cv = new ContentValues();
+        cv.put("password", passwordHash);
+        db.update("users", cv, "username = ?", new String[] {user.getUsername()});
+
+        return getUser(user.getUsername());
     }
 }

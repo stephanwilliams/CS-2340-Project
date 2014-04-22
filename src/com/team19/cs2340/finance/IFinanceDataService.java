@@ -105,4 +105,10 @@ public interface IFinanceDataService {
     Map<String, BigDecimal> getCategorySpendingReport(IUser user,
             long startTimestamp, long endTimestamp);
 
+    Map<String, BigDecimal> getIncomeSourceReport(IUser user,
+            long startTimestamp, long endTimestamp);
+
+    Map<String, BigDecimal> getCashFlowReport(IUser user,
+            long startTimestamp, long endTimestamp);
+
 }

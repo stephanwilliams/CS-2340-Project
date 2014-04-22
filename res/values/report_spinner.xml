@@ -2,6 +2,8 @@
 <resources>
     <string-array name="report_types">
         <item >Category Spending Report</item>
+        <item >Income Source Report</item>
+        <item >Cash Flow Report</item>
     </string-array>
     
 </resources>

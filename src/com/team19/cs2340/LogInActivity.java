@@ -85,15 +85,16 @@ public class LogInActivity extends Activity {
 
             passwordInput.setText("");
             if (user.getAccountType().equals(IUser.AccountType.ADMIN)) {
+                Intent intent = new Intent(this, AdminScreenActivity.class);
+                intent.putExtra("admin", user);
+                startActivity(intent);
 
             } else {
-                // ...
+                Intent intent = new Intent(this, HomeScreenActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
             }
 
-            // When admin implemented, put this in else!
-            Intent intent = new Intent(this, HomeScreenActivity.class);
-            intent.putExtra("user", user);
-            startActivity(intent);
         } catch (UserAccountException uae) {
             passwordInput.setText("");
             textView1.setText(uae.getMessage());

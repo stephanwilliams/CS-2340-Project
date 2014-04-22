@@ -17,5 +17,8 @@
     <string name="action_add_transaction">Add Transaction</string>
     <string name="action_view_reports">View Reports</string>
     <string name="title_activity_transaction_creation">Transaction Creation</string>
-	<string name="title_activity_spending_report">Spending Report</string>
+    <string name="title_activity_spending_report">Spending Report</string>
+    <string name="title_activity_admin_screen">Manage Users</string>
+    <string name="title_activity_password_change">Change Password</string>
+
 </resources>
